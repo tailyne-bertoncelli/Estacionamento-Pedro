@@ -24,9 +24,9 @@ public class Condutor extends AbstractEntity{
     @Column(name = "telefone", nullable = false, length = 17)
     private String telefone;
     @Getter @Setter
-    @Column(name = "tempo_gasto", nullable = false)
+    @Column(name = "tempo_gasto")
     private LocalTime tempoPago;
     @Getter @Setter
-    @Column(name = "tempo_desconto", nullable = false)
+    @Column(name = "tempo_desconto")
     private LocalTime tempoDesconto;
 }

@@ -5,6 +5,7 @@ import br.com.uniamerica.estacionamento.entity.Configuracao;
 import br.com.uniamerica.estacionamento.entity.Modelo;
 import br.com.uniamerica.estacionamento.repository.CondutorRepository;
 import br.com.uniamerica.estacionamento.repository.ModeloRepository;
+import br.com.uniamerica.estacionamento.service.ModeloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.Banner;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -20,12 +21,12 @@ import java.util.List;
 @RequestMapping(value = "/api/modelo")
 public class ModeloController {
     @Autowired
-    private ModeloRepository modeloRepository;
+    private ModeloService modeloService;
 
     //Passa na URL /modelo/1
     @GetMapping("/{id}")
     public ResponseEntity<?> findById(@PathVariable("id")final Long id){
-        final Modelo modelo = this.modeloRepository.findById(id).orElse(null);
+        final Modelo modelo = this.modeloService.findById(id);
 
         return modelo == null
             ? ResponseEntity.badRequest().body("Nenhuma marca encontrada!")
@@ -35,7 +36,7 @@ public class ModeloController {
     //Passa na URL /modelo?id=1 (Fica mais claro na url onde estamos mexendo
    @GetMapping
     public ResponseEntity<?> findByIdRequest(@RequestParam("id")final Long id){
-        final Modelo modelo = this.modeloRepository.findById(id).orElse(null);
+        final Modelo modelo = this.modeloService.findById(id);
 
         return modelo == null
                 ? ResponseEntity.badRequest().body("Nenhuma marca encontrada!")
@@ -45,7 +46,7 @@ public class ModeloController {
     @GetMapping("/modelo-ativo")
     public ResponseEntity <?> ativo (){
 
-        List<Modelo> modelo = this.modeloRepository.findAll();
+        List<Modelo> modelo = this.modeloService.findAll();
 
         List <Modelo> modeloAtivo = new ArrayList();
 
@@ -60,14 +61,14 @@ public class ModeloController {
 
     @GetMapping("/lista-modelo")
     public List<Modelo> findAll(){
-        return modeloRepository.findAll();
+        return modeloService.findAll();
     }
 
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody final Modelo modelo){
 
         try {
-            this.modeloRepository.save(modelo);
+            this.modeloService.cadastrar(modelo);
             return ResponseEntity.ok("Registro cadastrado com sucesso!");
         }
         catch (DataIntegrityViolationException e){
@@ -80,14 +81,14 @@ public class ModeloController {
             @RequestParam("id") final Long id,
             @RequestBody final Modelo modelo){
 
-        final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
+        final Modelo modeloBanco = this.modeloService.findById(id);
         if (modeloBanco == null || modeloBanco.getId().equals(modelo.getId())){
             throw new RuntimeException("Não foi possivel identificar o registro informado.");
 
         }
 
         try {
-            this.modeloRepository.save(modelo);
+            this.modeloService.altera(modelo);
             return ResponseEntity.ok("Registro atualizado com sucesso!");
         }
         catch (DataIntegrityViolationException e){
@@ -101,9 +102,9 @@ public class ModeloController {
     public ResponseEntity<?> delete(
             @RequestParam("id") final Long id
     ){
-        final Modelo modeloBanco = this.modeloRepository.findById(id).orElse(null);
+        final Modelo modeloBanco = this.modeloService.findById(id);
 
-        this.modeloRepository.delete(modeloBanco);
+        this.modeloService.deleta(modeloBanco);
         return ResponseEntity.ok("Registro Excluido com Sucesso");
     }
 

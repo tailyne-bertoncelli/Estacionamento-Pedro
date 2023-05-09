@@ -3,6 +3,7 @@ package br.com.uniamerica.estacionamento.controller;
 
 import br.com.uniamerica.estacionamento.entity.Marca;
 import br.com.uniamerica.estacionamento.repository.MarcaRepository;
+import br.com.uniamerica.estacionamento.service.MarcaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +16,11 @@ import java.util.List;
 @RequestMapping(value = "/api/marca")
 public class MarcaController {
     @Autowired
-    private MarcaRepository marcaRepository;
+    private MarcaService marcaService;
 
     @GetMapping
     public ResponseEntity<?> findByIdRequest(@RequestParam("id")final Long id){
-        final Marca marca = this.marcaRepository.findById(id).orElse(null);
+        final Marca marca = this.marcaService.findById(id);
         return marca == null
                 ? ResponseEntity.badRequest().body("Nenhum valor encontrado!")
                 : ResponseEntity.ok(marca);
@@ -28,7 +29,7 @@ public class MarcaController {
     @GetMapping("/marca-ativa")
     public ResponseEntity <?> ativo (){
 
-        List<Marca> marca = this.marcaRepository.findAll();
+        List<Marca> marca = this.marcaService.findAll();
 
         List <Marca> marcaAtiva = new ArrayList();
 
@@ -43,13 +44,13 @@ public class MarcaController {
 
     @GetMapping("/lista-marcas")
     public List<Marca> findAll(){
-        return marcaRepository.findAll();
+        return marcaService.findAll();
     }
 
     @PostMapping
     public ResponseEntity<?> cadastrar(@RequestBody final Marca marca){
         try {
-            this.marcaRepository.save(marca);
+            this.marcaService.cadastrar(marca);
             return ResponseEntity.ok("Marca cadastrada com sucesso!");
         }
         catch (DataIntegrityViolationException e){
@@ -62,14 +63,14 @@ public class MarcaController {
             @RequestParam("id") final Long id,
             @RequestBody final Marca marca){
 
-        final Marca marcaBanco = this.marcaRepository.findById(id).orElse(null);
+        final Marca marcaBanco = this.marcaService.findById(id);
         if (marcaBanco == null || marcaBanco.getId().equals(marca.getId())){
             throw new RuntimeException("Não foi possivel identificar o registro informado.");
 
         }
 
         try {
-            this.marcaRepository.save(marca);
+            this.marcaService.altera(marca);
             return ResponseEntity.ok("Registro atualizado com sucesso!");
         }
         catch (DataIntegrityViolationException e){
@@ -84,9 +85,9 @@ public class MarcaController {
     public ResponseEntity<?> delete(
             @RequestParam("id") final Long id
     ){
-        final Marca marcaBanco = this.marcaRepository.findById(id).orElse(null);
+        final Marca marcaBanco = this.marcaService.findById(id);
 
-        this.marcaRepository.delete(marcaBanco);
+        this.marcaService.deleta(marcaBanco);
         return ResponseEntity.ok("Registro Excluido com Sucesso");
     }
 
