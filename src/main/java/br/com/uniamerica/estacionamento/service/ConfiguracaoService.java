@@ -6,6 +6,7 @@ import br.com.uniamerica.estacionamento.repository.ConfiguracaoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
 import java.util.List;
 
@@ -26,6 +27,7 @@ public class ConfiguracaoService {
 
     @Transactional
     public void cadastrar(final Configuracao configuracao){
+        Assert.isTrue(configuracao.getInicioExpediente() == null, "Inicio de expediente não informado!");
         this.configuracaoRepository.save(configuracao);
     }
 }

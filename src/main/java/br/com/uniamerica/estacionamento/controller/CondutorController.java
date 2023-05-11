@@ -1,13 +1,9 @@
 package br.com.uniamerica.estacionamento.controller;
 
 import br.com.uniamerica.estacionamento.entity.Condutor;
-import br.com.uniamerica.estacionamento.entity.Modelo;
-import br.com.uniamerica.estacionamento.repository.CondutorRepository;
-import br.com.uniamerica.estacionamento.repository.ModeloRepository;
 import br.com.uniamerica.estacionamento.service.CondutorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -68,8 +64,8 @@ public class CondutorController {
             this.condutorService.cadastrar(condutor);
             return ResponseEntity.ok("Condutor cadastrado com sucesso!");
         }
-        catch (DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body("Error: ");
+        catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body("Error: "+ e.getMessage());
         }
     }
 

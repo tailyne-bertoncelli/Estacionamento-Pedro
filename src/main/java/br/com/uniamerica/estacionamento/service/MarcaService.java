@@ -25,10 +25,10 @@ public class MarcaService {
     public List<Marca> findAll(){
         return this.marcaRepository.findAll();
     }
-    @Transactional(rollbackOn = Exception.class)
+    @Transactional
     public void cadastrar(final Marca marca){
         if (marca.getNome().trim().isEmpty()){
-            throw new RuntimeException("Condutor sem nome informado!");
+            throw new RuntimeException("Marca sem nome informado!");
         } else {
             this.marcaRepository.save(marca);
         }

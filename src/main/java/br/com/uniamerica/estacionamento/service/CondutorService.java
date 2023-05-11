@@ -90,12 +90,12 @@ public class CondutorService {
             // Verifica se os digitos calculados conferem com os digitos informados.
             if ((dig10 == condutor.getCpf().charAt(9)) && (dig11 == condutor.getCpf().charAt(10)))
                 this.condutorRepository.save(condutor);
-            else throw new RuntimeException("Os digitos estão incorretos!");
+            else throw new RuntimeException("Os digitos do cpf estão incorretos!");
         } catch (InputMismatchException erro) {
             throw new RuntimeException("O CPF é invalido");
         }
 
-        if (condutor.getTelefone() == null || condutor.getTelefone().length() < 9){
+        if (condutor.getTelefone() == null || condutor.getTelefone().length() <= 9){
             throw new RuntimeException("Telefone incorreto!");
         } else {
             this.condutorRepository.save(condutor);

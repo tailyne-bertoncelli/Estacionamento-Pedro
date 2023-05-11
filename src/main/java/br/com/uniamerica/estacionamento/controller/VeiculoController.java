@@ -56,8 +56,8 @@ public class VeiculoController {
             this.veiculoService.cadastra(veiculo);
             return ResponseEntity.ok("Veiculo cadastrado com sucesso!");
         }
-        catch (DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body("Error: ");
+        catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body("Error: "+ e.getMessage());
         }
     }
 

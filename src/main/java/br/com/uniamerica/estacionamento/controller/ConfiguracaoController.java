@@ -37,8 +37,8 @@ public class ConfiguracaoController {
             this.configuracaoService.cadastrar(configuracao);
             return ResponseEntity.ok("Configuração realizada com sucesso!");
         }
-        catch (DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body("Error: ");
+        catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
         }
     }
 
