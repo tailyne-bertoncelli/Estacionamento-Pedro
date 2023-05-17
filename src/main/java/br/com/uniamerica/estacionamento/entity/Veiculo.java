@@ -33,5 +33,4 @@ public class Veiculo extends AbstractEntity{
     @Column(name = "ano", nullable = false)
     @NotNull
     private int ano;
-
 }

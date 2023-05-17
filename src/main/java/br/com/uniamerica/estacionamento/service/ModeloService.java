@@ -42,8 +42,10 @@ public class ModeloService {
         if (modelo.getNome().isEmpty()){
             throw new RuntimeException("Modelo sem nome informado!");
         }
-        if (marcaRepository.existsById(modelo.getMarca().getId())){
+        else if (!marcaRepository.existsById(modelo.getMarca().getId())){
             throw new RuntimeException("Marca informada não cadastrada!");
+        } else if (!marcaRepository.getById(modelo.getMarca().getId()).isAtivo()) {
+            throw new RuntimeException("Marca informada está desativada!");
         }
 
         this.modeloRepository.save(modelo);
