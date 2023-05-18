@@ -1,8 +1,10 @@
 package br.com.uniamerica.estacionamento.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
 import org.hibernate.envers.AuditTable;
@@ -17,6 +19,7 @@ public class Modelo extends AbstractEntity{
     @Column(name = "nome", nullable = false, unique = true)
     @NotBlank(message = "NOME não pode estar em branco!")
     @NotNull(message = "NOME não pode ser vazio!")
+    @Size(min = 1, max = 50, message = "Nome ultrapassou a quantidade de caracteres permitidos!")
     private String nome;
     @Getter @Setter
     @JoinColumn(name = "marca", nullable = false)

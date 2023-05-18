@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -50,7 +51,7 @@ public class VeiculoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final Veiculo veiculo){
+    public ResponseEntity<?> cadastrar(@Validated @RequestBody final Veiculo veiculo){
 
         try {
             this.veiculoService.cadastra(veiculo);
@@ -62,7 +63,7 @@ public class VeiculoController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editar(
+    public ResponseEntity<?> editar( @Validated
             @RequestParam("id") final Long id,
             @RequestBody final Veiculo veiculo){
 

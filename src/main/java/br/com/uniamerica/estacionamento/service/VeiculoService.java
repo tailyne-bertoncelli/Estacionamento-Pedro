@@ -41,19 +41,21 @@ public class VeiculoService {
 
     @Transactional
     public void cadastra(final Veiculo veiculo){
-        if (veiculo.getPlaca() == null){
-            throw new RuntimeException("Veiculo sem placa informada!");
-        } else if (veiculo.getModelo() == null) {
-            throw new RuntimeException("Modelo não informado!");
-        } else if (!modeloRepository.existsById(veiculo.getModelo().getId())) {
+//        if (veiculo.getPlaca() == null){
+//            throw new RuntimeException("Veiculo sem placa informada!");
+//        } else if (veiculo.getModelo() == null) {
+//            throw new RuntimeException("Modelo não informado!");
+//        }
+        if (!modeloRepository.existsById(veiculo.getModelo().getId())) {
             throw new RuntimeException("Modelo informado não existe!");
-        } else if (veiculo.getCor() == null) {
-            throw new RuntimeException("Cor do veiculo não informada!");
-        } else if (veiculo.getTipo() == null) {
-            throw new RuntimeException("Tipo do veiculo não informado!");
-        } else if (veiculo.getAno() < 1900) {
-            throw new RuntimeException("Ano do veiculo invalido!");
         }
+//        else if (veiculo.getCor() == null) {
+//            throw new RuntimeException("Cor do veiculo não informada!");
+//        } else if (veiculo.getTipo() == null) {
+//            throw new RuntimeException("Tipo do veiculo não informado!");
+//        } else if (veiculo.getAno() < 1900) {
+//            throw new RuntimeException("Ano do veiculo invalido!");
+//        }
         else {
             this.veiculoRepository.save(veiculo);
         } 

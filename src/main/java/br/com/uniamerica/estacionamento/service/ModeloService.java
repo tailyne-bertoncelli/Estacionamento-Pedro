@@ -39,10 +39,10 @@ public class ModeloService {
     
     @Transactional
     public void cadastrar(final Modelo modelo){
-        if (modelo.getNome().isEmpty()){
-            throw new RuntimeException("Modelo sem nome informado!");
-        }
-        else if (!marcaRepository.existsById(modelo.getMarca().getId())){
+//        if (modelo.getNome().isEmpty()){
+//            throw new RuntimeException("Modelo sem nome informado!");
+//        }
+        if (!marcaRepository.existsById(modelo.getMarca().getId())){
             throw new RuntimeException("Marca informada não cadastrada!");
         } else if (!marcaRepository.getById(modelo.getMarca().getId()).isAtivo()) {
             throw new RuntimeException("Marca informada está desativada!");

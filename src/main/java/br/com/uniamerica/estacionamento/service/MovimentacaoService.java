@@ -42,15 +42,19 @@ public class MovimentacaoService {
 
     @Transactional
     public void cadastra(final Movimentacao movimentacao){
-        if (movimentacao.getEntrada() == null){
-            throw new RuntimeException("Movimentação sem entrada!");
-        } else if (movimentacao.getCondutor() == null){
-            throw new RuntimeException("Movimentação sem condutor!");
-        } else if (!condutorRepository.existsById(movimentacao.getCondutor().getId())) {
+//        if (movimentacao.getEntrada() == null){
+//            throw new RuntimeException("Movimentação sem entrada!");
+//        }
+//        else if (movimentacao.getCondutor() == null){
+//            throw new RuntimeException("Movimentação sem condutor!");
+//        }
+        if (!condutorRepository.existsById(movimentacao.getCondutor().getId())) {
             throw new RuntimeException("Condutor informado não existe!");
-        } else if (movimentacao.getVeiculo() == null) {
-            throw new RuntimeException("Movimentação sem veiculo!");
-        } else if (!veiculoRepository.existsById(movimentacao.getVeiculo().getId())) {
+        }
+//        else if (movimentacao.getVeiculo() == null) {
+//            throw new RuntimeException("Movimentação sem veiculo!");
+//        }
+        else if (!veiculoRepository.existsById(movimentacao.getVeiculo().getId())) {
             throw new RuntimeException("Veiculo informado não existe!");
         } else {
             this.movimentacaoRepository.save(movimentacao);

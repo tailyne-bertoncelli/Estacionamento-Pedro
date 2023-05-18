@@ -27,11 +27,11 @@ public class MarcaService {
     }
     @Transactional
     public void cadastrar(final Marca marca){
-        if (marca.getNome().trim().isEmpty()){
-            throw new RuntimeException("Marca sem nome informado!");
-        } else {
+//        if (marca.getNome().trim().isEmpty()){
+//            throw new RuntimeException("Marca sem nome informado!");
+//        } else {
             this.marcaRepository.save(marca);
-        }
+        //}
     }
 
     @Transactional

@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping(value = "/api/condutor")
 public class CondutorController {
     @Autowired
@@ -71,7 +71,7 @@ public class CondutorController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editar(
+    public ResponseEntity<?> editar( @Validated
             @RequestParam("id") final Long id,
             @RequestBody final Condutor condutor){
 
@@ -92,4 +92,5 @@ public class CondutorController {
             return ResponseEntity.internalServerError().body("Error: "+ e.getMessage());
         }
     }
+
 }

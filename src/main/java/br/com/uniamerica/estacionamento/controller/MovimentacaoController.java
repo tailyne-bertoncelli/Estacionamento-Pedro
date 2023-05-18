@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -51,7 +52,7 @@ public class MovimentacaoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final Movimentacao movimentacao){
+    public ResponseEntity<?> cadastrar(@Validated @RequestBody final Movimentacao movimentacao){
 
         try {
             this.movimentacaoService.cadastra(movimentacao);
@@ -63,9 +64,7 @@ public class MovimentacaoController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editar(
-            @RequestParam("id") final Long id,
-            @RequestBody final Movimentacao movimentacao){
+    public ResponseEntity<?> editar(@Validated @RequestParam("id") final Long id, @RequestBody final Movimentacao movimentacao){
 
         final Movimentacao movimentacaoBanco = this.movimentacaoService.findById(id);
         if (movimentacaoBanco == null || movimentacaoBanco.getId().equals(movimentacao.getId())){

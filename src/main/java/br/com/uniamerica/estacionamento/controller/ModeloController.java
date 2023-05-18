@@ -5,6 +5,7 @@ import br.com.uniamerica.estacionamento.service.ModeloService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class ModeloController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final Modelo modelo){
+    public ResponseEntity<?> cadastrar(@RequestBody @Validated final Modelo modelo){
 
         try {
             this.modeloService.cadastrar(modelo);
@@ -70,9 +71,7 @@ public class ModeloController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editar(
-            @RequestParam("id") final Long id,
-            @RequestBody final Modelo modelo){
+    public ResponseEntity<?> editar(@Validated @RequestParam("id") final Long id, @RequestBody final Modelo modelo){
 
         final Modelo modeloBanco = this.modeloService.findById(id);
         if (modeloBanco == null || modeloBanco.getId().equals(modelo.getId())){

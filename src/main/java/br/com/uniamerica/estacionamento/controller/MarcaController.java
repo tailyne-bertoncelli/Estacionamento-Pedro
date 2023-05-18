@@ -7,6 +7,7 @@ import br.com.uniamerica.estacionamento.service.MarcaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -48,7 +49,7 @@ public class MarcaController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final Marca marca){
+    public ResponseEntity<?> cadastrar(@RequestBody @Validated final Marca marca){
         try {
             this.marcaService.cadastrar(marca);
             return ResponseEntity.ok("Marca cadastrada com sucesso!");
@@ -59,15 +60,13 @@ public class MarcaController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editar(
-            @RequestParam("id") final Long id,
-            @RequestBody final Marca marca){
+    public ResponseEntity<?> editar( @Validated @RequestParam("id") final Long id, @RequestBody final Marca marca){
 
-        final Marca marcaBanco = this.marcaService.findById(id);
-        if (marcaBanco == null || marcaBanco.getId().equals(marca.getId())){
-            throw new RuntimeException("Não foi possivel identificar o registro informado.");
-
-        }
+//        final Marca marcaBanco = this.marcaService.findById(id);
+//        if (marcaBanco == null || marcaBanco.getId().equals(marca.getId())){
+//            throw new RuntimeException("Não foi possivel identificar o registro informado.");
+//
+//        }
 
         try {
             this.marcaService.altera(marca);
