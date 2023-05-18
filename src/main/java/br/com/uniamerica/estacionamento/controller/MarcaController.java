@@ -80,6 +80,16 @@ public class MarcaController {
         }
     }
 
+    @PutMapping("/desativar/{id}")
+    public ResponseEntity<?> desativaMarca(@PathVariable Long id){
+        try {
+            this.marcaService.desativar(id);
+            return ResponseEntity.ok("Marca desativada com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Marca não encontrada!");
+        }
+    }
+
     @DeleteMapping
     public ResponseEntity<?> delete(
             @RequestParam("id") final Long id
