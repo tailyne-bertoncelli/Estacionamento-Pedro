@@ -37,9 +37,6 @@ public class ModeloService {
     
     @Transactional
     public void cadastrar(final Modelo modelo){
-//        if (modelo.getNome().isEmpty()){
-//            throw new RuntimeException("Modelo sem nome informado!");
-//        }
         if (!marcaRepository.existsById(modelo.getMarca().getId())){
             throw new RuntimeException("Marca informada não cadastrada!");
         } else if (!marcaRepository.getById(modelo.getMarca().getId()).isAtivo()) {
@@ -56,7 +53,7 @@ public class ModeloService {
             this.modeloRepository.desativaModelo(id);
         }
         else {
-            throw new RuntimeException("A modelo já esta desativado!");
+            throw new RuntimeException("A modelo não encontrado!");
         }
     }
 
@@ -67,7 +64,7 @@ public class ModeloService {
             this.modeloRepository.ativaModelo(id);
         }
         else {
-            throw new RuntimeException("A modelo já esta ativado!");
+            throw new RuntimeException("A modelo não encontrado!");
         }
     }
 }
