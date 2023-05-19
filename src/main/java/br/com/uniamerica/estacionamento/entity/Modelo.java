@@ -19,12 +19,11 @@ public class Modelo extends AbstractEntity{
     @Column(name = "nome", nullable = false, unique = true)
     @NotBlank(message = "NOME não pode estar em branco!")
     @NotNull(message = "NOME não pode ser vazio!")
-    @Size(min = 1, max = 50, message = "Nome ultrapassou a quantidade de caracteres permitidos!")
+    @Size(min = 1, max = 50, message = "Não tem a quantidade de caracteres permitidos min 3 max 50!")
     private String nome;
     @Getter @Setter
     @JoinColumn(name = "marca", nullable = false)
     @ManyToOne
-    @NotBlank(message = "MARCA não pode estar em branco!")
     @NotNull(message = "MARCA não pode ser vazio!")
     private Marca marca;
 }

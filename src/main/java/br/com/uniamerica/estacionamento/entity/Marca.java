@@ -18,6 +18,7 @@ public class Marca extends AbstractEntity{
     @Column(name = "nome", nullable = false ,unique = true)
     @NotBlank(message = "MARCA não pode estar em branco!")
     @NotNull(message = "MARCA não pode ser vazio!")
-    @Size(min = 1, max = 50, message = "Marca ultrapassou a quantidade de caracteres permitidos!")
+    @Size(min = 3, max = 50, message = "Marca não tem a quantidade de caracteres permitidos min 3 max 50!")
+    @Pattern(regexp = "^[a-zA-Z]{3,50}$", message = "Marca não pode conter numeros ou catacteres especiais")
     private String nome;
 }

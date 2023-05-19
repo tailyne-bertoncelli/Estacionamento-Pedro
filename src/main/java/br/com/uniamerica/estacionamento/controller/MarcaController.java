@@ -18,6 +18,8 @@ import java.util.List;
 public class MarcaController {
     @Autowired
     private MarcaService marcaService;
+    @Autowired
+    private MarcaRepository marcaRepository;
 
     @GetMapping
     public ResponseEntity<?> findByIdRequest(@RequestParam("id")final Long id){
@@ -55,36 +57,41 @@ public class MarcaController {
             return ResponseEntity.ok("Marca cadastrada com sucesso!");
         }
         catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Error: " + e.getMessage());
+            return ResponseEntity.internalServerError().body("Marca já cadastrada!");
         }
     }
 
     @PutMapping
-    public ResponseEntity<?> editar( @Validated @RequestParam("id") final Long id, @RequestBody final Marca marca){
+    public ResponseEntity<?> editar(@RequestParam("id") final Long id,
+                                    @Validated @RequestBody final Marca marca){
 
-//        final Marca marcaBanco = this.marcaService.findById(id);
-//        if (marcaBanco == null || marcaBanco.getId().equals(marca.getId())){
-//            throw new RuntimeException("Não foi possivel identificar o registro informado.");
-//
-//        }
+        Marca marcaBanco = marcaService.findById(id);
+        marcaBanco.setNome(marca.getNome());
 
         try {
-            this.marcaService.altera(marca);
-            return ResponseEntity.ok("Registro atualizado com sucesso!");
-        }
-        catch (DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getCause().getCause().getMessage());
-        }
-        catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getMessage());
+            this.marcaService.altera(marcaBanco);
+            return ResponseEntity.ok("Marca alterada com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body("Erro ao alterar marca!");
         }
     }
+
 
     @PutMapping("/desativar/{id}")
     public ResponseEntity<?> desativaMarca(@PathVariable Long id){
         try {
             this.marcaService.desativar(id);
             return ResponseEntity.ok("Marca desativada com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Marca não encontrada!");
+        }
+    }
+
+    @PutMapping("/ativar/{id}")
+    public ResponseEntity<?> ativaMarca(@PathVariable Long id){
+        try {
+            this.marcaService.ativar(id);
+            return ResponseEntity.ok("Marca ativada com sucesso!");
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("Marca não encontrada!");
         }

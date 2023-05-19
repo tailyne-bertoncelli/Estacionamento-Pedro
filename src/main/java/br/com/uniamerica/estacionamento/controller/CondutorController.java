@@ -34,7 +34,7 @@ public class CondutorController {
         final Condutor condutorBanco = this.condutorService.findById(id);
 
         this.condutorService.deleta(condutorBanco);
-        return ResponseEntity.ok("Registro Excluido com Sucesso");
+        return ResponseEntity.ok("Registro excluido com Sucesso");
     }
 
 //    @GetMapping("/condutor-ativo")

@@ -28,23 +28,23 @@ public class Veiculo extends AbstractEntity{
     @JoinColumn(name = "modelo", nullable = false)
     @ManyToOne
     @NotNull(message = "Modelo não pode ser vazio!")
-    @NotBlank(message = "Modelo não pode estar em branco!")
+    //@NotBlank(message = "Modelo não pode estar em branco!")
     private Modelo modelo;
     @Enumerated(EnumType.STRING)
     @Getter @Setter
     @Column(name = "cor", length = 20, nullable = false)
     @NotNull(message = "Cor não pode ser vazio!")
-    @NotBlank(message = "Cor não pode estar em branco!")
+    //@NotBlank(message = "Cor não pode estar em branco!")
     private Cor cor;
     @Enumerated(EnumType.STRING)
     @Getter @Setter
     @Column(name = "tipo", length = 20, nullable = false)
     @NotNull(message = "Tipo não pode ser vazio!")
-    @NotBlank(message = "Tipo não pode estar em branco!")
+    //@NotBlank(message = "Tipo não pode estar em branco!")
     private Tipo tipo;
     @Getter @Setter
     @Column(name = "ano", nullable = false)
     @NotNull(message = "Ano não pode ser vazio!")
-    @NotBlank(message = "Ano não pode estar em branco!")
+    //@NotBlank(message = "Ano não pode estar em branco!")
     private int ano;
 }
