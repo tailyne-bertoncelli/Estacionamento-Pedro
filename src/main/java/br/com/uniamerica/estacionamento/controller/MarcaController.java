@@ -68,6 +68,7 @@ public class MarcaController {
     public ResponseEntity<?> editar(@RequestParam("id") final Long id,
                                     @Validated @RequestBody final Marca marca){
 
+
         Marca marcaBanco = marcaService.findById(id);
         marcaBanco.setNome(marca.getNome());
 

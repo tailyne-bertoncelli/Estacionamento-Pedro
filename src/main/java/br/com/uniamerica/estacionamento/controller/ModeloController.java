@@ -69,12 +69,13 @@ public class ModeloController {
 
         Modelo modeloBanco = modeloService.findById(id);
         modeloBanco.setNome(modelo.getNome());
+        modeloBanco.setMarca(modelo.getMarca());
 
         try {
             this.modeloService.altera(modeloBanco);
             return ResponseEntity.ok("Modelo alterada com sucesso!");
         } catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Erro ao alterar modelo!");
+            return ResponseEntity.internalServerError().body("Erro: "+ e.getMessage());
         }
     }
 

@@ -35,6 +35,9 @@ public class MarcaService {
 
     @Transactional
     public void altera(final Marca marca){
+        if (!marcaRepository.existsById(marca.getId())){
+            throw new RuntimeException("Marca não existe!");
+        }
         this.marcaRepository.save(marca);
     }
 
