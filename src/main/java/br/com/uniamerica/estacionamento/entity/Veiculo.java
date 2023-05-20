@@ -1,10 +1,7 @@
 package br.com.uniamerica.estacionamento.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.NonNull;
 import lombok.Setter;
@@ -22,7 +19,8 @@ public class Veiculo extends AbstractEntity{
     @Column(name = "placa", nullable = false, unique = true)
     @NotNull(message = "Placa não pode ser vazio!")
     @NotBlank(message = "Placa não pode estar em branco!")
-    @Size(min = 1, max = 10, message = "Placa ultrapassou os caracteres permitidos!")
+    @Pattern(regexp = "^[A-Z]{3}[0-9][0-9A-Z][0-9]{2}$", message = "Formato incorreto!")
+    @Size(min=7, max = 10, message = "Placa não possui quantidade de caracateres necessario min 7 max 10")
     private String placa;
     @Getter @Setter
     @JoinColumn(name = "modelo", nullable = false)

@@ -10,15 +10,18 @@ import org.springframework.util.Assert;
 
 import java.util.InputMismatchException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CondutorService {
     @Autowired
     private CondutorRepository condutorRepository;
 
-    public Condutor findById(Long id){
-        return this.condutorRepository.findById(id).orElse(new Condutor());
+    public Condutor findById(Long id) {
+        Optional<Condutor> condutor = this.condutorRepository.findById(id);
+        return condutor.orElseThrow(() -> new RuntimeException("Condutor não encontrado! Id: " + id));
     }
+
 
     public List<Condutor> findAll(){
         return this.condutorRepository.findAll();
@@ -36,7 +39,7 @@ public class CondutorService {
 
     @Transactional
     public void cadastrar(final Condutor condutor) {
-        /*if (condutor.getNome().trim().isEmpty()){
+        if (condutor.getNome().trim().isEmpty()){
             throw new RuntimeException("Condutor sem nome informado!");
         } else {
             this.condutorRepository.save(condutor);
@@ -99,9 +102,31 @@ public class CondutorService {
             throw new RuntimeException("Telefone incorreto!");
         } else if (condutor.getTelefone().length() >= 20) {
             throw new RuntimeException("Telefone ultrapassou o numero de caracteres permitidos");
-        } else {*/
+        } else {
             this.condutorRepository.save(condutor);
-        //}
+        }
+    }
+
+    @Transactional
+    public void desativar(Long id){
+        var condutor = condutorRepository.findById(id);
+        if (id == condutor.get().getId()){
+            this.condutorRepository.desativaCondutor(id);
+        }
+        else {
+            throw new RuntimeException("O condutor não foi encontrado!");
+        }
+    }
+
+    @Transactional
+    public void ativar(Long id){
+        var condutor = condutorRepository.findById(id);
+        if (id == condutor.get().getId()){
+            this.condutorRepository.ativaCondutor(id);
+        }
+        else {
+            throw new RuntimeException("O condutor não foi encontrado!");
+        }
     }
 
 }

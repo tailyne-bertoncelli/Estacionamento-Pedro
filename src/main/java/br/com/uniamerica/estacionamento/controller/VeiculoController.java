@@ -1,6 +1,7 @@
 package br.com.uniamerica.estacionamento.controller;
 
 
+import br.com.uniamerica.estacionamento.entity.Condutor;
 import br.com.uniamerica.estacionamento.entity.Veiculo;
 import br.com.uniamerica.estacionamento.repository.VeiculoRepository;
 import br.com.uniamerica.estacionamento.service.VeiculoService;
@@ -21,13 +22,16 @@ public class VeiculoController {
     private VeiculoService veiculoService;
 
     @GetMapping
-    public ResponseEntity<?> findByIdRequest(@RequestParam("id") final Long id){
-        final Veiculo veiculo = this.veiculoService.findById(id);
+    public ResponseEntity<?> findById(@RequestParam("id")final Long id){
 
-        return veiculo == null
-                ? ResponseEntity.badRequest().body("Nenhum veiculo encontrado!")
-                : ResponseEntity.ok(veiculo);
+        try {
+            this.veiculoService.findById(id);
+            return ResponseEntity.ok().body(this.veiculoService.findById(id));
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Nenhum veiculo encontrado!");
+        }
     }
+
 
     @GetMapping("/veiculo-ativo")
     public ResponseEntity <?> ativo (){
@@ -58,30 +62,26 @@ public class VeiculoController {
             return ResponseEntity.ok("Veiculo cadastrado com sucesso!");
         }
         catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getMessage());
+            return ResponseEntity.internalServerError().body("Um veiculo com essa placa já foi cadastrado!");
         }
     }
 
     @PutMapping
-    public ResponseEntity<?> editar( @Validated
-            @RequestParam("id") final Long id,
-            @RequestBody final Veiculo veiculo){
+    public ResponseEntity<?> editar(@RequestParam("id") final Long id,
+                                    @Validated @RequestBody final Veiculo veiculo){
 
-        final Veiculo veiculoBanco = this.veiculoService.findById(id);
-        if (veiculoBanco == null || veiculoBanco.getId().equals(veiculo.getId())){
-            throw new RuntimeException("Não foi possivel identificar o veiculo informado.");
-
-        }
+        Veiculo veiculoBanco = veiculoService.findById(id);
+        veiculoBanco.setPlaca(veiculo.getPlaca());
+        veiculoBanco.setModelo(veiculo.getModelo());
+        veiculoBanco.setTipo(veiculo.getTipo());
+        veiculoBanco.setAno(veiculo.getAno());
+        veiculoBanco.setCor(veiculo.getCor());
 
         try {
-            this.veiculoService.altera(veiculo);
-            return ResponseEntity.ok("Veiculo atualizado com sucesso!");
-        }
-        catch (DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getCause().getCause().getMessage());
-        }
-        catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getMessage());
+            this.veiculoService.altera(veiculoBanco);
+            return ResponseEntity.ok("Condutor alterada com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body("Erro ao alterar condutor!");
         }
     }
 
@@ -93,5 +93,25 @@ public class VeiculoController {
 
         this.veiculoService.deleta(veiculoBanco);
         return ResponseEntity.ok("Veiculo excluido com Sucesso");
+    }
+
+    @PutMapping("ativa/{id}")
+    public ResponseEntity<?> ativaVeiculo(@PathVariable Long id){
+        try {
+            this.veiculoService.ativar(id);
+            return ResponseEntity.ok("Veiculo ativado com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body("Veiculo já está ativo!");
+        }
+    }
+
+    @PutMapping("desativa/{id}")
+    public ResponseEntity<?> desativaVeiculo(@PathVariable Long id){
+        try {
+            this.veiculoService.desativar(id);
+            return ResponseEntity.ok("Veiculo desativado com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body("Veiculo já está desativado!");
+        }
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MarcaService {
@@ -16,10 +17,11 @@ public class MarcaService {
     @Autowired
     private MarcaRepository marcaRepository;
 
-
-    public Marca findById(Long id){
-        return this.marcaRepository.findById(id).orElse(new Marca());
+    public Marca findById(Long id) {
+        Optional<Marca> marca = this.marcaRepository.findById(id);
+        return marca.orElseThrow(() -> new RuntimeException("Marca não encontrada! Id: " + id));
     }
+
     public List<Marca> findAll(){
         return this.marcaRepository.findAll();
     }
@@ -41,6 +43,7 @@ public class MarcaService {
         this.marcaRepository.delete(marca);
     }
 
+/*
     @Transactional
     public void desativar(Long id){
         var marca = marcaRepository.findById(id);
@@ -62,4 +65,5 @@ public class MarcaService {
             throw new RuntimeException("A marca já esta ativada!");
         }
     }
+    */
 }

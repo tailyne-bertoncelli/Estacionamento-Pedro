@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ModeloService {
@@ -17,8 +18,9 @@ public class ModeloService {
     private ModeloRepository modeloRepository;
     @Autowired
     private MarcaRepository marcaRepository;
-    public Modelo findById(Long id){
-        return this.modeloRepository.findById(id).orElse(new Modelo());
+    public Modelo findById(Long id) {
+        Optional<Modelo> modelo = this.modeloRepository.findById(id);
+        return modelo.orElseThrow(() -> new RuntimeException("Modelo não encontrado!"));
     }
 
     public List<Modelo> findAll(){
@@ -32,6 +34,11 @@ public class ModeloService {
 
     @Transactional
     public void altera(final Modelo modelo){
+        if (!marcaRepository.existsById(modelo.getMarca().getId())){
+            throw new RuntimeException("Marca informada não cadastrada!");
+        } else if (!marcaRepository.getById(modelo.getMarca().getId()).isAtivo()) {
+            throw new RuntimeException("Marca informada está desativada!");
+        }
         this.modeloRepository.save(modelo);
     }
     
@@ -46,6 +53,7 @@ public class ModeloService {
         this.modeloRepository.save(modelo);
     }
 
+    /*
     @Transactional
     public void desativar(Long id){
         var marca = modeloRepository.findById(id);
@@ -67,4 +75,5 @@ public class ModeloService {
             throw new RuntimeException("A modelo não encontrado!");
         }
     }
+    */
 }

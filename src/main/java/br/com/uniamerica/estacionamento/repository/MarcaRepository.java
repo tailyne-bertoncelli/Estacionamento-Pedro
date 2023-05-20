@@ -7,10 +7,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface MarcaRepository extends JpaRepository<Marca, Long> {
-//    @Query(value = "SELECT marca FROM Marca marca WHERE marca.id != :id")
-//    public boolean validaId(@Param("id") Long id);
+    /*
+    @Query(value = "SELECT marca FROM Marca marca WHERE marca.id != :id")
+    public boolean validaId(@Param("id") Long id);
     public Marca findByNomeAndAtivoTrue(final String nome);
+    */
 
+    /*
     @Modifying
     @Query("UPDATE Marca marca SET marca.ativo=false WHERE marca.id = :idMarca")
     public void desativaMarca (@Param("idMarca")Long id);
@@ -18,4 +21,5 @@ public interface MarcaRepository extends JpaRepository<Marca, Long> {
     @Modifying
     @Query("UPDATE Marca marca SET marca.ativo=true WHERE marca.id = :idMarca")
     public void ativaMarca (@Param("idMarca")Long id);
+    */
 }

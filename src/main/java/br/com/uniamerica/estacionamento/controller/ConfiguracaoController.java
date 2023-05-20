@@ -22,12 +22,14 @@ public class ConfiguracaoController {
     private ConfiguracaoService configuracaoService;
 
     @GetMapping
-    public ResponseEntity<?> findByIdRequest(@RequestParam("id")final Long id){
-        final Configuracao configuracao = this.configuracaoService.findById(id);
+    public ResponseEntity<?> findById(@RequestParam("id")final Long id){
 
-        return configuracao == null
-                ? ResponseEntity.badRequest().body("Nenhum registro de configuração encontrado!")
-                : ResponseEntity.ok(configuracao);
+        try {
+            this.configuracaoService.findById(id);
+            return ResponseEntity.ok().body(this.configuracaoService.findById(id));
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Nenhuma configuração encontrado!");
+        }
     }
 
     @PostMapping

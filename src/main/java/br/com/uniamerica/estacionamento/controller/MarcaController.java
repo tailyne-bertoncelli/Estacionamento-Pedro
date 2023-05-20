@@ -22,11 +22,14 @@ public class MarcaController {
     private MarcaRepository marcaRepository;
 
     @GetMapping
-    public ResponseEntity<?> findByIdRequest(@RequestParam("id")final Long id){
-        final Marca marca = this.marcaService.findById(id);
-        return marca == null
-                ? ResponseEntity.badRequest().body("Nenhum valor encontrado!")
-                : ResponseEntity.ok(marca);
+    public ResponseEntity<?> findById(@RequestParam("id")final Long id){
+
+        try {
+            this.marcaService.findById(id);
+            return ResponseEntity.ok().body(this.marcaService.findById(id));
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Nenhuma marca encontrada!");
+        }
     }
 
     @GetMapping("/marca-ativa")
@@ -77,6 +80,7 @@ public class MarcaController {
     }
 
 
+/*
     @PutMapping("/desativar/{id}")
     public ResponseEntity<?> desativaMarca(@PathVariable Long id){
         try {
@@ -96,6 +100,7 @@ public class MarcaController {
             return ResponseEntity.badRequest().body("Marca não encontrada!");
         }
     }
+    */
 
     @DeleteMapping
     public ResponseEntity<?> delete(

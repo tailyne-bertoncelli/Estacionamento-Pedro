@@ -1,6 +1,7 @@
 package br.com.uniamerica.estacionamento.service;
 
 import br.com.uniamerica.estacionamento.entity.Condutor;
+import br.com.uniamerica.estacionamento.entity.Modelo;
 import br.com.uniamerica.estacionamento.entity.Movimentacao;
 import br.com.uniamerica.estacionamento.repository.CondutorRepository;
 import br.com.uniamerica.estacionamento.repository.MovimentacaoRepository;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class MovimentacaoService {
@@ -22,8 +24,9 @@ public class MovimentacaoService {
     @Autowired
     private VeiculoRepository veiculoRepository;
 
-    public Movimentacao findById(Long id){
-        return this.movimentacaoRepository.findById(id).orElse(new Movimentacao());
+    public Movimentacao findById(Long id) {
+        Optional<Movimentacao> movimentacao = this.movimentacaoRepository.findById(id);
+        return movimentacao.orElseThrow(() -> new RuntimeException("Movimentação não encontrado!"));
     }
 
     public List<Movimentacao> findAll(){

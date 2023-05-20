@@ -18,25 +18,17 @@ public class ModeloController {
     @Autowired
     private ModeloService modeloService;
 
-    //Passa na URL /modelo/1
-    @GetMapping("/{id}")
-    public ResponseEntity<?> findById(@PathVariable("id")final Long id){
-        final Modelo modelo = this.modeloService.findById(id);
+    @GetMapping
+    public ResponseEntity<?> findById(@RequestParam("id")final Long id){
 
-        return modelo == null
-            ? ResponseEntity.badRequest().body("Nenhuma marca encontrada!")
-            : ResponseEntity.ok(modelo);
+        try {
+            this.modeloService.findById(id);
+            return ResponseEntity.ok().body(this.modeloService.findById(id));
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Nenhum modelo encontrado!");
+        }
     }
 
-    //Passa na URL /modelo?id=1 (Fica mais claro na url onde estamos mexendo
-   @GetMapping
-    public ResponseEntity<?> findByIdRequest(@RequestParam("id")final Long id){
-        final Modelo modelo = this.modeloService.findById(id);
-
-        return modelo == null
-                ? ResponseEntity.badRequest().body("Nenhuma marca encontrada!")
-                : ResponseEntity.ok(modelo);
-    }
 
     @GetMapping("/modelo-ativo")
     public ResponseEntity <?> ativo (){
@@ -86,6 +78,7 @@ public class ModeloController {
         }
     }
 
+/*
     @PutMapping("/desativar/{id}")
     public ResponseEntity<?> desativaModelo(@PathVariable Long id){
         try {
@@ -105,6 +98,7 @@ public class ModeloController {
             return ResponseEntity.badRequest().body("Modelo não encontrado!");
         }
     }
+    */
 
     @DeleteMapping
     public ResponseEntity<?> delete(

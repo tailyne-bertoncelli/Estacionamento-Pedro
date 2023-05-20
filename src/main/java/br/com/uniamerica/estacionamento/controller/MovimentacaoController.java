@@ -22,12 +22,14 @@ public class MovimentacaoController {
     private MovimentacaoService movimentacaoService;
 
     @GetMapping
-    public ResponseEntity<?> findByIdRequest(@RequestParam("id") final Long id){
-        final Movimentacao movimentacao = this.movimentacaoService.findById(id);
+    public ResponseEntity<?> findById(@RequestParam("id")final Long id){
 
-        return movimentacao == null
-                ? ResponseEntity.badRequest().body("Nenhum registro encontrado")
-                : ResponseEntity.ok(movimentacao);
+        try {
+            this.movimentacaoService.findById(id);
+            return ResponseEntity.ok().body(this.movimentacaoService.findById(id));
+        }catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Nenhum movimentação encontrada!");
+        }
     }
 
     @GetMapping("/movimentacao-aberta")
