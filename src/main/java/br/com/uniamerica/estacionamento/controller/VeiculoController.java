@@ -62,7 +62,7 @@ public class VeiculoController {
             return ResponseEntity.ok("Veiculo cadastrado com sucesso!");
         }
         catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Um veiculo com essa placa já foi cadastrado!");
+            return ResponseEntity.internalServerError().body("Erro: "+ e.getMessage());
         }
     }
 
@@ -79,9 +79,9 @@ public class VeiculoController {
 
         try {
             this.veiculoService.altera(veiculoBanco);
-            return ResponseEntity.ok("Condutor alterada com sucesso!");
+            return ResponseEntity.ok("Veiculo alterado com sucesso!");
         } catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Erro ao alterar condutor!");
+            return ResponseEntity.internalServerError().body("Erro: "+e.getMessage());
         }
     }
 

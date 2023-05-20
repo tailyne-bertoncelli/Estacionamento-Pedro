@@ -40,27 +40,53 @@ public class MovimentacaoService {
 
     @Transactional
     public void altera(final Movimentacao movimentacao){
-        this.movimentacaoRepository.save(movimentacao);
+        if (!condutorRepository.existsById(movimentacao.getCondutor().getId())) {
+            throw new RuntimeException("Condutor informado não existe!");
+        } else if (!condutorRepository.getById(movimentacao.getCondutor().getId()).isAtivo()) {
+            throw new RuntimeException("Condutor está desativado");
+        } else if (!veiculoRepository.existsById(movimentacao.getVeiculo().getId())) {
+            throw new RuntimeException("Veiculo informado não existe!");
+        } else if (!veiculoRepository.getById(movimentacao.getVeiculo().getId()).isAtivo()) {
+            throw new RuntimeException("Veiculo informado está desativado");
+        } else {
+            this.movimentacaoRepository.save(movimentacao);
+        }
     }
 
     @Transactional
     public void cadastra(final Movimentacao movimentacao){
-//        if (movimentacao.getEntrada() == null){
-//            throw new RuntimeException("Movimentação sem entrada!");
-//        }
-//        else if (movimentacao.getCondutor() == null){
-//            throw new RuntimeException("Movimentação sem condutor!");
-//        }
         if (!condutorRepository.existsById(movimentacao.getCondutor().getId())) {
             throw new RuntimeException("Condutor informado não existe!");
-        }
-//        else if (movimentacao.getVeiculo() == null) {
-//            throw new RuntimeException("Movimentação sem veiculo!");
-//        }
-        else if (!veiculoRepository.existsById(movimentacao.getVeiculo().getId())) {
+        } else if (!condutorRepository.getById(movimentacao.getCondutor().getId()).isAtivo()) {
+            throw new RuntimeException("Condutor está desativado");
+        } else if (!veiculoRepository.existsById(movimentacao.getVeiculo().getId())) {
             throw new RuntimeException("Veiculo informado não existe!");
+        } else if (!veiculoRepository.getById(movimentacao.getVeiculo().getId()).isAtivo()) {
+            throw new RuntimeException("Veiculo informado está desativado");
         } else {
             this.movimentacaoRepository.save(movimentacao);
+        }
+    }
+
+    @Transactional
+    public void desativar(Long id){
+        var condutor = movimentacaoRepository.findById(id);
+        if (id == condutor.get().getId()){
+            this.movimentacaoRepository.desativaMovimetacao(id);
+        }
+        else {
+            throw new RuntimeException("A movimentação não foi encontrado!");
+        }
+    }
+
+    @Transactional
+    public void ativar(Long id){
+        var condutor = movimentacaoRepository.findById(id);
+        if (id == condutor.get().getId()){
+            this.movimentacaoRepository.ativaMovimetacao(id);
+        }
+        else {
+            throw new RuntimeException("A movimentação não foi encontrado!");
         }
     }
 }

@@ -17,7 +17,6 @@ import java.util.Optional;
 public class VeiculoService {
     @Autowired
     private VeiculoRepository veiculoRepository;
-
     @Autowired
     private ModeloRepository modeloRepository;
     @Autowired

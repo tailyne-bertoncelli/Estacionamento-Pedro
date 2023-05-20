@@ -27,9 +27,6 @@ public class MarcaService {
     }
     @Transactional
     public void cadastrar(final Marca marca){
-        if (marca.getNome().length() < 3){
-            throw new RuntimeException("Marca invalida!");
-        }
         this.marcaRepository.save(marca);
     }
 

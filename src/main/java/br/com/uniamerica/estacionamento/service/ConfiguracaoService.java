@@ -30,7 +30,6 @@ public class ConfiguracaoService {
 
     @Transactional
     public void cadastrar(final Configuracao configuracao){
-        Assert.isTrue(configuracao.getInicioExpediente() == null, "Inicio de expediente não informado!");
         this.configuracaoRepository.save(configuracao);
     }
 }

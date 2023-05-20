@@ -1,6 +1,7 @@
 package br.com.uniamerica.estacionamento.controller;
 
 import br.com.uniamerica.estacionamento.entity.Condutor;
+import br.com.uniamerica.estacionamento.entity.Marca;
 import br.com.uniamerica.estacionamento.entity.Modelo;
 import br.com.uniamerica.estacionamento.entity.Movimentacao;
 import br.com.uniamerica.estacionamento.repository.MovimentacaoRepository;
@@ -66,23 +67,20 @@ public class MovimentacaoController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editar(@Validated @RequestParam("id") final Long id, @RequestBody final Movimentacao movimentacao){
+    public ResponseEntity<?> editar(@RequestParam("id") final Long id,
+                                    @Validated @RequestBody final Movimentacao movimentacao){
 
-        final Movimentacao movimentacaoBanco = this.movimentacaoService.findById(id);
-        if (movimentacaoBanco == null || movimentacaoBanco.getId().equals(movimentacao.getId())){
-            throw new RuntimeException("Não foi possivel identificar o registro informado.");
-
-        }
+        Movimentacao movimentacaoBanco = movimentacaoService.findById(id);
+        movimentacaoBanco.setCondutor(movimentacao.getCondutor());
+        movimentacaoBanco.setVeiculo(movimentacao.getVeiculo());
+        movimentacaoBanco.setTempoHoras(movimentacao.getTempoHoras());
+        movimentacaoBanco.setTempoDesconto(movimentacao.getTempoDesconto());
 
         try {
-            this.movimentacaoService.altera(movimentacao);
-            return ResponseEntity.ok("Registro atualizado com sucesso!");
-        }
-        catch (DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getCause().getCause().getMessage());
-        }
-        catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getMessage());
+            this.movimentacaoService.altera(movimentacaoBanco);
+            return ResponseEntity.ok("Movimentacao alterada com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body("Erro: "+ e.getMessage());
         }
     }
 
@@ -94,5 +92,25 @@ public class MovimentacaoController {
 
         this.movimentacaoService.deleta(movimentacaoBanco);
         return ResponseEntity.ok("Movimentacao excluida com Sucesso");
+    }
+
+    @PutMapping("/desativar/{id}")
+    public ResponseEntity<?> desativaMovimentacao(@PathVariable Long id){
+        try {
+            this.movimentacaoService.desativar(id);
+            return ResponseEntity.ok("Movimetação desativada com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Movimentacao não encontrada!");
+        }
+    }
+
+    @PutMapping("/ativar/{id}")
+    public ResponseEntity<?> ativaMovimentacao(@PathVariable Long id){
+        try {
+            this.movimentacaoService.ativar(id);
+            return ResponseEntity.ok("Movimentação ativada com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Movimentação não encontrada!");
+        }
     }
 }

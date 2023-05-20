@@ -85,9 +85,9 @@ public class CondutorController {
 
         try {
             this.condutorService.altera(condutorBanco);
-            return ResponseEntity.ok("Condutor alterada com sucesso!");
+            return ResponseEntity.ok("Condutor alterado com sucesso!");
         } catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Erro ao alterar marca!");
+            return ResponseEntity.internalServerError().body("Erro: "+ e.getMessage());
         }
     }
 

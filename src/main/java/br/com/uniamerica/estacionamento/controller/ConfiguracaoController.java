@@ -2,6 +2,7 @@ package br.com.uniamerica.estacionamento.controller;
 
 import br.com.uniamerica.estacionamento.entity.Condutor;
 import br.com.uniamerica.estacionamento.entity.Configuracao;
+import br.com.uniamerica.estacionamento.entity.Marca;
 import br.com.uniamerica.estacionamento.entity.Modelo;
 import br.com.uniamerica.estacionamento.repository.ConfiguracaoRepository;
 import br.com.uniamerica.estacionamento.service.CondutorService;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -33,7 +35,7 @@ public class ConfiguracaoController {
     }
 
     @PostMapping
-    public ResponseEntity<?> cadastrar(@RequestBody final Configuracao configuracao){
+    public ResponseEntity<?> cadastrar(@Validated @RequestBody final Configuracao configuracao){
 
         try {
             this.configuracaoService.cadastrar(configuracao);
@@ -45,25 +47,27 @@ public class ConfiguracaoController {
     }
 
     @PutMapping
-    public ResponseEntity<?> editar(
-            @RequestParam("id") final Long id,
-            @RequestBody final Configuracao configuracao){
+    public ResponseEntity<?> editar(@RequestParam("id") final Long id,
+                                    @Validated @RequestBody final Configuracao configuracao){
 
-        final Configuracao configuracaoBanco = this.configuracaoService.findById(id);
-        if (configuracaoBanco == null || configuracaoBanco.getId().equals(configuracao.getId())){
-            throw new RuntimeException("Não foi possivel identificar o registro informado.");
 
-        }
+        Configuracao configuracaoBanco = configuracaoService.findById(id);
+        configuracaoBanco.setValorHora(configuracao.getValorHora());
+        configuracaoBanco.setValorMinutoHora(configuracao.getValorMinutoHora());
+        configuracaoBanco.setInicioExpediente(configuracao.getInicioExpediente());
+        configuracaoBanco.setFimExpediente(configuracao.getFimExpediente());
+        configuracaoBanco.setTempoParaDesconto(configuracao.getTempoParaDesconto());
+        configuracaoBanco.setTempoDeDesconto(configuracao.getTempoDeDesconto());
+        configuracaoBanco.setGerarDesconto(configuracao.isGerarDesconto()); //Booleano
+        configuracaoBanco.setVagasCarro(configuracao.getVagasCarro());
+        configuracaoBanco.setVagasMoto(configuracao.getVagasMoto());
+        configuracaoBanco.setVagasVan(configuracao.getVagasVan());
 
         try {
-            this.configuracaoService.altera(configuracao);
-            return ResponseEntity.ok("Registro atualizado com sucesso!");
-        }
-        catch (DataIntegrityViolationException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getCause().getCause().getMessage());
-        }
-        catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getMessage());
+            this.configuracaoService.altera(configuracaoBanco);
+            return ResponseEntity.ok("Configuração alterada com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.internalServerError().body("Erro ao alterar configuração!" +e.getMessage());
         }
     }
 

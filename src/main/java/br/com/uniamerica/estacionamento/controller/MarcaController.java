@@ -76,7 +76,7 @@ public class MarcaController {
             this.marcaService.altera(marcaBanco);
             return ResponseEntity.ok("Marca alterada com sucesso!");
         } catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Erro ao alterar marca!");
+            return ResponseEntity.internalServerError().body("Erro: "+ e.getMessage());
         }
     }
 
