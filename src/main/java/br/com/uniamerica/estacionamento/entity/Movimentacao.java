@@ -1,5 +1,6 @@
 package br.com.uniamerica.estacionamento.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 
@@ -20,29 +22,27 @@ public class Movimentacao extends AbstractEntity{
     @Getter @Setter
     @JoinColumn(name = "veiculo", nullable = false, unique = true)
     @ManyToOne
-    @NotBlank(message = "VEICULO não pode estar em branco!")
     @NotNull(message = "VEICULO não pode ser vazio!")
     private Veiculo veiculo;
     @Getter @Setter
     @JoinColumn(name = "condutor", nullable = false)
     @ManyToOne
-    @NotBlank(message = "CONDUTOR não pode estar em branco!")
     @NotNull(message = "CONDUTOR não pode ser vazio!")
     private Condutor condutor;
     @Getter @Setter
     @Column(name = "entrada", nullable = false)
-    @NotBlank(message = "ENTRADA não pode estar em branco!")
-    @NotNull(message = "ENTRADA não pode ser vazio!")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime entrada;
     @Getter @Setter
     @Column(name = "saida")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime saida;
     @Getter@Setter
     @Column(name = "tempo_horas")
-    private int tempoHoras;
+    private Long tempoHoras;
     @Getter@Setter
     @Column(name = "tempo_minutos")
-    private int tempoMinutos;
+    private Long tempoMinutos;
     @Getter @Setter
     @Column(name = "tempo_disponivel_desconto")
     private LocalTime tempoDesconto;
@@ -64,4 +64,31 @@ public class Movimentacao extends AbstractEntity{
     @Getter @Setter
     @Column(name = "valor_hora_multa")
     private BigDecimal valorHoraMulta;
+
+    public void setEntradaMov() {
+        this.entrada = LocalDateTime.now();
+    }
+
+//    public void calculaTempo(){
+//        this.saida = LocalDateTime.now();
+//        Configuracao configuracao = new Configuracao();
+//        Long minutosAux, horasAux;
+//        minutosAux = Duration.between(entrada, saida).getSeconds();
+//        minutosAux = minutosAux / 60;
+//        horasAux = minutosAux / 60;
+//        minutosAux = minutosAux % 60;
+//
+//        tempoHoras = horasAux;
+//        tempoMinutos = minutosAux;
+//
+//        BigDecimal vhora = configuracao.getValorHora();
+//        valorHora = vhora.multiply(BigDecimal.valueOf(horasAux));
+//    }
+
+    private BigDecimal calculaValorPorHora(BigDecimal valorHora, int tempoMinutos) {
+        int tempoAPagarEmHoras = (tempoMinutos / 60);
+        if (tempoMinutos % 60 != 0)
+            tempoAPagarEmHoras++;
+        return valorHora.multiply(BigDecimal.valueOf(tempoAPagarEmHoras));
+    }
 }

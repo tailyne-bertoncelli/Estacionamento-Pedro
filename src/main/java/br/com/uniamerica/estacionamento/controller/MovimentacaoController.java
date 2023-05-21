@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +57,7 @@ public class MovimentacaoController {
 
     @PostMapping
     public ResponseEntity<?> cadastrar(@Validated @RequestBody final Movimentacao movimentacao){
-
+        //movimentacao.setEntradaMov();
         try {
             this.movimentacaoService.cadastra(movimentacao);
             return ResponseEntity.ok("Movimentação registrada com sucesso!");
@@ -98,7 +99,7 @@ public class MovimentacaoController {
     public ResponseEntity<?> desativaMovimentacao(@PathVariable Long id){
         try {
             this.movimentacaoService.desativar(id);
-            return ResponseEntity.ok("Movimetação desativada com sucesso!");
+            return ResponseEntity.ok("Movimentação desativada com sucesso!");
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("Movimentacao não encontrada!");
         }
@@ -111,6 +112,18 @@ public class MovimentacaoController {
             return ResponseEntity.ok("Movimentação ativada com sucesso!");
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("Movimentação não encontrada!");
+        }
+    }
+
+    @PutMapping("/finalizar/{id}")
+    public ResponseEntity<?> finalizar(@PathVariable("id")final Long id, @RequestBody final Movimentacao movimentacao){
+        Movimentacao movimentacao1 = this.movimentacaoService.findById(id);
+        movimentacao1.setSaida(movimentacao.getSaida());
+        try {
+            this.movimentacaoService.finalizaMov(id, movimentacao1);
+            return ResponseEntity.ok("Movimentação finalizada com sucesso!");
+        } catch (RuntimeException e){
+            return ResponseEntity.badRequest().body("Erro ao finalizar movimentação!");
         }
     }
 }

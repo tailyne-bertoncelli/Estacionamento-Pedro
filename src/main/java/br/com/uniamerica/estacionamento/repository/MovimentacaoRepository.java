@@ -9,10 +9,10 @@ import org.springframework.data.repository.query.Param;
 public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long> {
     @Modifying
     @Query("UPDATE Movimentacao movimentacao SET movimentacao.ativo=false WHERE movimentacao.id = :idMovimentacao")
-    public void desativaMovimetacao(@Param("idMovimetacao")Long id);
+    public void desativaMovimetacao(@Param("idMovimentacao")Long id);
 
     @Modifying
     @Query("UPDATE Movimentacao movimentacao SET movimentacao.ativo=true WHERE movimentacao.id = :idMovimentacao")
-    public void ativaMovimetacao(@Param("idMovimetacao")Long id);
+    public void ativaMovimetacao(@Param("idMovimentacao")Long id);
 
 }

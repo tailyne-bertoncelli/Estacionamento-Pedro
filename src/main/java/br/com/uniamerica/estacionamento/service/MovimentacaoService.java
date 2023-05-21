@@ -1,6 +1,7 @@
 package br.com.uniamerica.estacionamento.service;
 
 import br.com.uniamerica.estacionamento.entity.Condutor;
+import br.com.uniamerica.estacionamento.entity.Configuracao;
 import br.com.uniamerica.estacionamento.entity.Modelo;
 import br.com.uniamerica.estacionamento.entity.Movimentacao;
 import br.com.uniamerica.estacionamento.repository.CondutorRepository;
@@ -10,6 +11,8 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +67,7 @@ public class MovimentacaoService {
         } else if (!veiculoRepository.getById(movimentacao.getVeiculo().getId()).isAtivo()) {
             throw new RuntimeException("Veiculo informado está desativado");
         } else {
+            //movimentacao.setEntradaMov();
             this.movimentacaoRepository.save(movimentacao);
         }
     }
@@ -88,5 +92,22 @@ public class MovimentacaoService {
         else {
             throw new RuntimeException("A movimentação não foi encontrado!");
         }
+    }
+
+    @Transactional
+    public void finalizaMov(final Long id, final Movimentacao movimentacao){
+        //movimentacao.setSaida(LocalDateTime.now());
+        this.movimentacaoRepository.save(movimentacao);
+        Configuracao configuracao = new Configuracao();
+
+        //CALCULANDO AS HORAS E MINUTOS
+        Long tempoPermanencia = Duration.between(movimentacao.getEntrada(), movimentacao.getSaida()).getSeconds();
+        Long minutos = tempoPermanencia / 60;
+        Long horas = minutos / 60;
+        minutos = minutos % 60;
+        movimentacao.setTempoHoras(horas);
+        movimentacao.setTempoMinutos(minutos);
+
+        System.out.println(configuracao.getValorHora());
     }
 }
