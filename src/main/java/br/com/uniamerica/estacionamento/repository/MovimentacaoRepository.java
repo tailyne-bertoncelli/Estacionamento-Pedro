@@ -1,5 +1,6 @@
 package br.com.uniamerica.estacionamento.repository;
 
+import br.com.uniamerica.estacionamento.entity.Configuracao;
 import br.com.uniamerica.estacionamento.entity.Movimentacao;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -15,4 +16,6 @@ public interface MovimentacaoRepository extends JpaRepository<Movimentacao, Long
     @Query("UPDATE Movimentacao movimentacao SET movimentacao.ativo=true WHERE movimentacao.id = :idMovimentacao")
     public void ativaMovimetacao(@Param("idMovimentacao")Long id);
 
+    @Query("SELECT configuracao FROM Configuracao configuracao")
+    Configuracao buscaConfig();
 }

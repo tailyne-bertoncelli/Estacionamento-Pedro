@@ -11,8 +11,10 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -98,7 +100,7 @@ public class MovimentacaoService {
     public void finalizaMov(final Long id, final Movimentacao movimentacao){
         //movimentacao.setSaida(LocalDateTime.now());
         this.movimentacaoRepository.save(movimentacao);
-        Configuracao configuracao = new Configuracao();
+        Configuracao configuracao = movimentacaoRepository.buscaConfig();
 
         //CALCULANDO AS HORAS E MINUTOS
         Long tempoPermanencia = Duration.between(movimentacao.getEntrada(), movimentacao.getSaida()).getSeconds();
@@ -108,6 +110,20 @@ public class MovimentacaoService {
         movimentacao.setTempoHoras(horas);
         movimentacao.setTempoMinutos(minutos);
 
-        System.out.println(configuracao.getValorHora());
+        //CALCULANDO VALOR DAS HORAS
+        BigDecimal vHora = configuracao.getValorHora();
+        BigDecimal vTotalHora = BigDecimal.valueOf(horas).multiply(vHora);
+        movimentacao.setValorHora(vTotalHora);
+
+        //CALCULANDO MULTA
+        Long tempoExpediente = Duration.between(configuracao.getFimExpediente(), configuracao.getInicioExpediente()).getSeconds();
+        Long minutosExpediente = tempoExpediente / 60;
+        Long horasExpediente = minutosExpediente / 60;
+        minutosExpediente = minutos % 60;
+
+        if (tempoPermanencia > tempoExpediente){
+            Long horasMulta = horas - horasExpediente;
+            Long minutosMulta = minutos - minutosExpediente;
+        }
     }
 }

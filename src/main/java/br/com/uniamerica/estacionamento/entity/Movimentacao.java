@@ -69,26 +69,5 @@ public class Movimentacao extends AbstractEntity{
         this.entrada = LocalDateTime.now();
     }
 
-//    public void calculaTempo(){
-//        this.saida = LocalDateTime.now();
-//        Configuracao configuracao = new Configuracao();
-//        Long minutosAux, horasAux;
-//        minutosAux = Duration.between(entrada, saida).getSeconds();
-//        minutosAux = minutosAux / 60;
-//        horasAux = minutosAux / 60;
-//        minutosAux = minutosAux % 60;
-//
-//        tempoHoras = horasAux;
-//        tempoMinutos = minutosAux;
-//
-//        BigDecimal vhora = configuracao.getValorHora();
-//        valorHora = vhora.multiply(BigDecimal.valueOf(horasAux));
-//    }
 
-    private BigDecimal calculaValorPorHora(BigDecimal valorHora, int tempoMinutos) {
-        int tempoAPagarEmHoras = (tempoMinutos / 60);
-        if (tempoMinutos % 60 != 0)
-            tempoAPagarEmHoras++;
-        return valorHora.multiply(BigDecimal.valueOf(tempoAPagarEmHoras));
-    }
 }
