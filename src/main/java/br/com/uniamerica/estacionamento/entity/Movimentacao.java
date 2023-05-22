@@ -39,35 +39,38 @@ public class Movimentacao extends AbstractEntity{
     private LocalDateTime saida;
     @Getter@Setter
     @Column(name = "tempo_horas")
-    private Long tempoHoras;
+    private Long tempoHoras; //foi
     @Getter@Setter
     @Column(name = "tempo_minutos")
-    private Long tempoMinutos;
+    private Long tempoMinutos; //foi
     @Getter @Setter
     @Column(name = "tempo_disponivel_desconto")
     private LocalTime tempoDesconto;
     @Getter @Setter
     @Column(name = "tempo_multa")
-    private LocalTime tempoMulta;
+    private Long tempoMulta; //foi
     @Getter @Setter
     @Column(name = "desconto_realizado")
     private BigDecimal valorDesconto;
     @Getter @Setter
     @Column(name = "valor_multa")
-    private BigDecimal valorMulta;
+    private BigDecimal valorMulta; //foi
     @Getter @Setter
     @Column(name = "valor_total")
     private BigDecimal valorTotal;
     @Getter @Setter
     @Column(name = "valor_hora")
-    private BigDecimal valorHora;
+    private BigDecimal valorHora; //foi
     @Getter @Setter
     @Column(name = "valor_hora_multa")
-    private BigDecimal valorHoraMulta;
+    private BigDecimal valorHoraMulta; //foi
 
     public void setEntradaMov() {
         this.entrada = LocalDateTime.now();
     }
 
-
+    @Override
+    public String toString() {
+        return "";
+    }
 }

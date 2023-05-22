@@ -24,7 +24,7 @@ public class Configuracao extends AbstractEntity{
     private BigDecimal valorHora;
     @Getter @Setter
     @Column(name = "valor_minuto")
-    private BigDecimal valorMinutoHora;
+    private BigDecimal valorMinutoMulta;
     @Getter @Setter
     @Column(name = "hora_inicio_expediente")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")

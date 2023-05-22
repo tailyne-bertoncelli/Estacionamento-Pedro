@@ -118,6 +118,7 @@ public class MovimentacaoController {
     @PutMapping("/finalizar/{id}")
     public ResponseEntity<?> finalizar(@PathVariable("id")final Long id, @RequestBody final Movimentacao movimentacao){
         Movimentacao movimentacao1 = this.movimentacaoService.findById(id);
+        Condutor condutor = movimentacao.getCondutor();
         movimentacao1.setSaida(movimentacao.getSaida());
         try {
             this.movimentacaoService.finalizaMov(id, movimentacao1);

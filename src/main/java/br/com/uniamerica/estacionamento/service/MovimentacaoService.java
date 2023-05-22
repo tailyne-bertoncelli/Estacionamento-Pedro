@@ -102,13 +102,16 @@ public class MovimentacaoService {
         this.movimentacaoRepository.save(movimentacao);
         Configuracao configuracao = movimentacaoRepository.buscaConfig();
 
+
         //CALCULANDO AS HORAS E MINUTOS
         Long tempoPermanencia = Duration.between(movimentacao.getEntrada(), movimentacao.getSaida()).getSeconds();
         Long minutos = tempoPermanencia / 60;
+        Long minutosTotais = minutos;
         Long horas = minutos / 60;
         minutos = minutos % 60;
         movimentacao.setTempoHoras(horas);
         movimentacao.setTempoMinutos(minutos);
+        movimentacao.getCondutor().setTempoPagoHora(horas);
 
         //CALCULANDO VALOR DAS HORAS
         BigDecimal vHora = configuracao.getValorHora();
@@ -116,14 +119,17 @@ public class MovimentacaoService {
         movimentacao.setValorHora(vTotalHora);
 
         //CALCULANDO MULTA
-        Long tempoExpediente = Duration.between(configuracao.getFimExpediente(), configuracao.getInicioExpediente()).getSeconds();
-        Long minutosExpediente = tempoExpediente / 60;
-        Long horasExpediente = minutosExpediente / 60;
-        minutosExpediente = minutos % 60;
+        LocalTime fim = configuracao.getFimExpediente();
+        if (fim.isBefore(movimentacao.getSaida().toLocalTime())){
+            Long tempoForaExpediente = Duration.between(fim, movimentacao.getSaida()).toMinutes();
+            System.out.println(tempoForaExpediente);
+            movimentacao.setTempoMulta(tempoForaExpediente);
 
-        if (tempoPermanencia > tempoExpediente){
-            Long horasMulta = horas - horasExpediente;
-            Long minutosMulta = minutos - minutosExpediente;
+            BigDecimal vMulta = configuracao.getValorMinutoMulta();
+            BigDecimal vMultaTotal = vMulta.multiply(BigDecimal.valueOf(tempoForaExpediente));
+            movimentacao.setValorHoraMulta(vMultaTotal);
         }
+
+
     }
 }

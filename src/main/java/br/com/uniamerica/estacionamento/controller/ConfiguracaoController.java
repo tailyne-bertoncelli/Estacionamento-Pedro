@@ -53,7 +53,7 @@ public class ConfiguracaoController {
 
         Configuracao configuracaoBanco = configuracaoService.findById(id);
         configuracaoBanco.setValorHora(configuracao.getValorHora());
-        configuracaoBanco.setValorMinutoHora(configuracao.getValorMinutoHora());
+        configuracaoBanco.setValorMinutoMulta(configuracao.getValorMinutoMulta());
         configuracaoBanco.setInicioExpediente(configuracao.getInicioExpediente());
         configuracaoBanco.setFimExpediente(configuracao.getFimExpediente());
         configuracaoBanco.setTempoParaDesconto(configuracao.getTempoParaDesconto());
