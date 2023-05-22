@@ -71,6 +71,27 @@ public class Movimentacao extends AbstractEntity{
 
     @Override
     public String toString() {
-        return "";
+        return "----------------------------------------------------------\n                RELATORIO DE MOVIMENTACAO\n----------------------------------------------------------\n" +
+                "                     DADOS DO VEICULO                       \n"+
+                "\nPlaca: " + veiculo.getPlaca() +
+                "\nVeiculo: " + veiculo.getModelo().getNome() +
+                "\nMarca: " + veiculo.getModelo().getMarca().getNome()+ "    Tipo: "+ veiculo.getTipo() + "    Ano: " + veiculo.getAno()+"\n\n"+
+                "                     DADOS DO CONDUTOR                       \n" +
+                "\nNome: " + condutor.getNome()+
+                "\nTelefone: " + condutor.getTelefone() +
+                "\nCPF: " + condutor.getCpf() +
+                "\nHoras já pagas: " + condutor.getTempoPagoHora() +
+                "                     DADOS DA MOVIMENTAÇÃO                   \n" +
+                "\nHorario de entrada: " + entrada +
+                "\nHorario de saida: " + saida +
+                "\nMinuros após horario núcleo: " + tempoMulta +
+                "\n\n------------------------ Descontos -----------------------\n" +
+                "\nHoras acumuladas: " + condutor.getTempoPagoHora() +
+                "\nValor do desconto:" +
+                "\n\n------------------------- Valores ------------------------\n" +
+                "\nValor de tempo de permanência: " + valorHora +
+                "\nValor da multa: " + valorMulta +
+                "\nValor de desconto: " + valorDesconto +
+                "\n\n                                        TOTAL: R$ " + valorTotal;
     }
 }

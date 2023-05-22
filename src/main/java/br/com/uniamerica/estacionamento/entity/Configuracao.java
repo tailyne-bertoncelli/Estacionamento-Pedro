@@ -35,12 +35,12 @@ public class Configuracao extends AbstractEntity{
     private LocalTime fimExpediente;
     @Getter @Setter
     @Column(name = "tempo_para_desconto")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalTime tempoParaDesconto;
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Long tempoParaDesconto;
     @Getter @Setter
     @Column(name = "tempo_de_desconto")
-    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalTime tempoDeDesconto;
+    //@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Long tempoDeDesconto;
     @Getter @Setter
     @Column(name = "gerar_desconto")
     private boolean gerarDesconto;

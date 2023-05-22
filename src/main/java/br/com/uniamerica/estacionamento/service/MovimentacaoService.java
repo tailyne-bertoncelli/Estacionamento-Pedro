@@ -111,7 +111,6 @@ public class MovimentacaoService {
         minutos = minutos % 60;
         movimentacao.setTempoHoras(horas);
         movimentacao.setTempoMinutos(minutos);
-        movimentacao.getCondutor().setTempoPagoHora(horas);
 
         //CALCULANDO VALOR DAS HORAS
         BigDecimal vHora = configuracao.getValorHora();
@@ -127,9 +126,34 @@ public class MovimentacaoService {
 
             BigDecimal vMulta = configuracao.getValorMinutoMulta();
             BigDecimal vMultaTotal = vMulta.multiply(BigDecimal.valueOf(tempoForaExpediente));
-            movimentacao.setValorHoraMulta(vMultaTotal);
+            movimentacao.setValorMulta(vMultaTotal);
+            int vHoraMulta = configuracao.getValorMinutoMulta().intValue() * 60;
+            movimentacao.setValorHoraMulta(BigDecimal.valueOf(vHoraMulta));
+        }
+
+        //CALCULA VALOR TOTAL
+        int valorMulta = movimentacao.getValorMulta().intValue();
+        int valorHoras = movimentacao.getValorHora().intValue();
+        int horasTotais = valorMulta + valorHoras;
+        movimentacao.setValorTotal(BigDecimal.valueOf(horasTotais));
+
+        //ARMAZENA AS HORAS PAGAS NO CONDUTO
+        Long multaEmHoras = movimentacao.getTempoMulta() / 60;
+        Long horasPagas = multaEmHoras + movimentacao.getTempoHoras();
+        if (movimentacao.getCondutor().getTempoPagoHora() != null) {
+            Long armazenaNoCondutor = movimentacao.getCondutor().getTempoPagoHora() + horasPagas;
+            movimentacao.getCondutor().setTempoPagoHora(armazenaNoCondutor);
+        } else {
+            movimentacao.getCondutor().setTempoPagoHora(horasPagas);
         }
 
 
+        //CALCULA DESCONTO
+        if (configuracao.isGerarDesconto() == true){
+            if (movimentacao.getCondutor().getTempoPagoHora() > configuracao.getTempoParaDesconto()){
+                Long horasAdescontar = configuracao.getTempoDeDesconto();
+                Long horasDescontadas = movimentacao.getTempoHoras() - horasAdescontar;
+            }
+        }
     }
 }
