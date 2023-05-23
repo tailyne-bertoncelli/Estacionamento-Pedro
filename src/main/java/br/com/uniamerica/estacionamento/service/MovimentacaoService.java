@@ -108,11 +108,14 @@ public class MovimentacaoService {
         minutos = minutos % 60;
         movimentacao.setTempoHoras(horas);
         movimentacao.setTempoMinutos(minutos);
+        System.out.println("1 " + horas);
+        System.out.println("2 " + minutos);
 
         //CALCULANDO VALOR DAS HORAS
         BigDecimal vHora = configuracao.getValorHora();
         BigDecimal vTotalHora = BigDecimal.valueOf(horas).multiply(vHora);
         movimentacao.setValorHora(vTotalHora);
+        System.out.println("3 " + vTotalHora);
 
         //CALCULANDO MULTA
         LocalTime fim = configuracao.getFimExpediente();
@@ -120,39 +123,57 @@ public class MovimentacaoService {
             Long tempoForaExpediente = Duration.between(fim, movimentacao.getSaida()).toMinutes();
             System.out.println(tempoForaExpediente);
             movimentacao.setTempoMulta(tempoForaExpediente);
+            System.out.println("4 " + tempoForaExpediente);
 
             BigDecimal vMulta = configuracao.getValorMinutoMulta();
             BigDecimal vMultaTotal = vMulta.multiply(BigDecimal.valueOf(tempoForaExpediente));
             movimentacao.setValorMulta(vMultaTotal);
+            System.out.println("5 " + vMultaTotal);
             int vHoraMulta = configuracao.getValorMinutoMulta().intValue() * 60;
             movimentacao.setValorHoraMulta(BigDecimal.valueOf(vHoraMulta));
+            System.out.println("6 " + vHoraMulta);
+        } else {
+            movimentacao.setValorMulta(BigDecimal.valueOf(0));
         }
 
         //CALCULA VALOR TOTAL
+        //int valorMulta = 0;
         int valorMulta = movimentacao.getValorMulta().intValue();
         int valorHoras = movimentacao.getValorHora().intValue();
         int valorTotal = valorMulta + valorHoras;
         movimentacao.setValorTotal(BigDecimal.valueOf(valorTotal));
+        System.out.println("7 " + valorTotal);
+
 
         //ARMAZENA AS HORAS PAGAS NO CONDUTO
+        if (movimentacao.getTempoMulta() == null){
+            movimentacao.setTempoMulta(0L);
+        }
         Long multaEmHoras = movimentacao.getTempoMulta() / 60;
         Long horasPagas = multaEmHoras + movimentacao.getTempoHoras();
         movimentacao.getCondutor().setTempoPagoHora(horasPagas + movimentacao.getCondutor().getTempoPagoHora());
-
+        Long teste = horasPagas + movimentacao.getCondutor().getTempoPagoHora();
+        System.out.println("8 " + teste);
 
         //CALCULA DESCONTO
         if (configuracao.isGerarDesconto() == true){
-            if (movimentacao.getCondutor().getTempoPagoHora() > configuracao.getTempoParaDesconto()){
+            if (movimentacao.getCondutor().getTempoPagoHora() >= configuracao.getTempoParaDesconto()){
                 Long horasDesconto = configuracao.getTempoDeDesconto();
                 movimentacao.setTempoDesconto(horasDesconto);
+                System.out.println("9 " + horasDesconto);
+
                 BigDecimal vDesconto = vHora.multiply(BigDecimal.valueOf(horasDesconto));
                 movimentacao.setValorDesconto(vDesconto);
+                System.out.println("10 " + vDesconto);
+
                 int valorDesconto = movimentacao.getValorDesconto().intValue();
                 int totalComDescoto = movimentacao.getValorTotal().intValue() - valorDesconto;
                 movimentacao.setValorTotal(BigDecimal.valueOf(totalComDescoto));
+                System.out.println("11 " + totalComDescoto);
 
                 Long descontaHorasCondutor = movimentacao.getCondutor().getTempoPagoHora() - configuracao.getTempoParaDesconto();
                 movimentacao.getCondutor().setTempoPagoHora(descontaHorasCondutor);
+                System.out.println("12 "+ descontaHorasCondutor);
             }
         }
     }

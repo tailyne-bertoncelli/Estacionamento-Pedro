@@ -39,7 +39,7 @@ public class Condutor extends AbstractEntity{
     private String telefone;
     @Getter @Setter
     @Column(name = "tempo_gasto")
-    private Long tempoPagoHora;
+    private Long tempoPagoHora = 0L;
     @Getter @Setter
     @Column(name = "tempo_desconto")
     private Long tempoDesconto;

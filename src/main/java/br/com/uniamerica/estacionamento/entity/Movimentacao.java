@@ -29,10 +29,12 @@ public class Movimentacao extends AbstractEntity{
     @Getter @Setter
     @Column(name = "entrada", nullable = false)
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    //@FutureOrPresent(message = "Ainda nao foi inventada viagem no tempo!")
     private LocalDateTime entrada;
     @Getter @Setter
     @Column(name = "saida")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    //@FutureOrPresent(message = "Ainda nao foi inventada viagem no tempo!")
     private LocalDateTime saida;
     @Getter@Setter
     @Column(name = "tempo_horas")

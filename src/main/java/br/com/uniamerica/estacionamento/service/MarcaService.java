@@ -19,7 +19,7 @@ public class MarcaService {
 
     public Marca findById(Long id) {
         Optional<Marca> marca = this.marcaRepository.findById(id);
-        return marca.orElseThrow(() -> new RuntimeException("Marca não encontrada! Id: " + id));
+        return marca.orElseThrow(() -> new RuntimeException("Marca não encontrada!"));
     }
 
     public List<Marca> findAll(){

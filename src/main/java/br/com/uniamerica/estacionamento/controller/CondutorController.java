@@ -70,7 +70,7 @@ public class CondutorController {
             return ResponseEntity.ok("Condutor cadastrado com sucesso!");
         }
         catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getMessage());
+            return ResponseEntity.internalServerError().body("Condutor já cadastrado ou erro: "+ e.getMessage());
         }
     }
 

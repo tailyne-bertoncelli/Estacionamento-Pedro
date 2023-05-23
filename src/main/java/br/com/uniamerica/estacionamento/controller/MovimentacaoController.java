@@ -81,7 +81,7 @@ public class MovimentacaoController {
             this.movimentacaoService.altera(movimentacaoBanco);
             return ResponseEntity.ok("Movimentacao alterada com sucesso!");
         } catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Erro: "+ e.getMessage());
+            return ResponseEntity.internalServerError().body("Movimentação já cadasstrada! Ou erro: "+ e.getMessage());
         }
     }
 

@@ -62,7 +62,7 @@ public class VeiculoController {
             return ResponseEntity.ok("Veiculo cadastrado com sucesso!");
         }
         catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Erro: "+ e.getMessage());
+            return ResponseEntity.internalServerError().body("Veiculo já cadastrado! Ou erro: "+ e.getMessage());
         }
     }
 

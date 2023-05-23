@@ -59,7 +59,7 @@ public class ModeloController {
             return ResponseEntity.ok("Registro cadastrado com sucesso!");
         }
         catch (RuntimeException e){
-            return ResponseEntity.internalServerError().body("Error: "+ e.getMessage());
+            return ResponseEntity.internalServerError().body("Modelo ja cadastrado! Ou erro: "+ e.getMessage());
         }
     }
 
