@@ -1,8 +1,6 @@
 package br.com.uniamerica.estacionamento.service;
 
-import br.com.uniamerica.estacionamento.entity.Condutor;
 import br.com.uniamerica.estacionamento.entity.Configuracao;
-import br.com.uniamerica.estacionamento.entity.Modelo;
 import br.com.uniamerica.estacionamento.entity.Movimentacao;
 import br.com.uniamerica.estacionamento.repository.CondutorRepository;
 import br.com.uniamerica.estacionamento.repository.MovimentacaoRepository;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Duration;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -134,25 +131,28 @@ public class MovimentacaoService {
         //CALCULA VALOR TOTAL
         int valorMulta = movimentacao.getValorMulta().intValue();
         int valorHoras = movimentacao.getValorHora().intValue();
-        int horasTotais = valorMulta + valorHoras;
-        movimentacao.setValorTotal(BigDecimal.valueOf(horasTotais));
+        int valorTotal = valorMulta + valorHoras;
+        movimentacao.setValorTotal(BigDecimal.valueOf(valorTotal));
 
         //ARMAZENA AS HORAS PAGAS NO CONDUTO
         Long multaEmHoras = movimentacao.getTempoMulta() / 60;
         Long horasPagas = multaEmHoras + movimentacao.getTempoHoras();
-        if (movimentacao.getCondutor().getTempoPagoHora() != null) {
-            Long armazenaNoCondutor = movimentacao.getCondutor().getTempoPagoHora() + horasPagas;
-            movimentacao.getCondutor().setTempoPagoHora(armazenaNoCondutor);
-        } else {
-            movimentacao.getCondutor().setTempoPagoHora(horasPagas);
-        }
+        movimentacao.getCondutor().setTempoPagoHora(horasPagas + movimentacao.getCondutor().getTempoPagoHora());
 
 
         //CALCULA DESCONTO
         if (configuracao.isGerarDesconto() == true){
             if (movimentacao.getCondutor().getTempoPagoHora() > configuracao.getTempoParaDesconto()){
-                Long horasAdescontar = configuracao.getTempoDeDesconto();
-                Long horasDescontadas = movimentacao.getTempoHoras() - horasAdescontar;
+                Long horasDesconto = configuracao.getTempoDeDesconto();
+                movimentacao.setTempoDesconto(horasDesconto);
+                BigDecimal vDesconto = vHora.multiply(BigDecimal.valueOf(horasDesconto));
+                movimentacao.setValorDesconto(vDesconto);
+                int valorDesconto = movimentacao.getValorDesconto().intValue();
+                int totalComDescoto = movimentacao.getValorTotal().intValue() - valorDesconto;
+                movimentacao.setValorTotal(BigDecimal.valueOf(totalComDescoto));
+
+                Long descontaHorasCondutor = movimentacao.getCondutor().getTempoPagoHora() - configuracao.getTempoParaDesconto();
+                movimentacao.getCondutor().setTempoPagoHora(descontaHorasCondutor);
             }
         }
     }

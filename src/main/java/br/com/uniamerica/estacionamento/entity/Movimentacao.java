@@ -2,7 +2,6 @@ package br.com.uniamerica.estacionamento.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;
@@ -10,9 +9,7 @@ import org.hibernate.envers.AuditTable;
 import org.hibernate.envers.Audited;
 
 import java.math.BigDecimal;
-import java.time.Duration;
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 
 @Entity
 @Audited
@@ -39,31 +36,31 @@ public class Movimentacao extends AbstractEntity{
     private LocalDateTime saida;
     @Getter@Setter
     @Column(name = "tempo_horas")
-    private Long tempoHoras; //foi
+    private Long tempoHoras;
     @Getter@Setter
     @Column(name = "tempo_minutos")
-    private Long tempoMinutos; //foi
+    private Long tempoMinutos;
     @Getter @Setter
     @Column(name = "tempo_disponivel_desconto")
-    private LocalTime tempoDesconto;
+    private Long tempoDesconto;
     @Getter @Setter
     @Column(name = "tempo_multa")
-    private Long tempoMulta; //foi
+    private Long tempoMulta;
     @Getter @Setter
     @Column(name = "desconto_realizado")
     private BigDecimal valorDesconto;
     @Getter @Setter
     @Column(name = "valor_multa")
-    private BigDecimal valorMulta; //foi
+    private BigDecimal valorMulta;
     @Getter @Setter
     @Column(name = "valor_total")
     private BigDecimal valorTotal;
     @Getter @Setter
     @Column(name = "valor_hora")
-    private BigDecimal valorHora; //foi
+    private BigDecimal valorHora;
     @Getter @Setter
     @Column(name = "valor_hora_multa")
-    private BigDecimal valorHoraMulta; //foi
+    private BigDecimal valorHoraMulta;
 
     public void setEntradaMov() {
         this.entrada = LocalDateTime.now();
@@ -80,15 +77,19 @@ public class Movimentacao extends AbstractEntity{
                 "\nNome: " + condutor.getNome()+
                 "\nTelefone: " + condutor.getTelefone() +
                 "\nCPF: " + condutor.getCpf() +
-                "\nHoras já pagas: " + condutor.getTempoPagoHora() +
-                "                     DADOS DA MOVIMENTAÇÃO                   \n" +
+                "\nHoras já pagas: " + condutor.getTempoPagoHora() +"\n"+
+                "                   DADOS DA MOVIMENTAÇÃO                   \n" +
                 "\nHorario de entrada: " + entrada +
                 "\nHorario de saida: " + saida +
+                "\nTempo de permanencia: "+tempoHoras+" horas e "+tempoMinutos+" minutos"+
                 "\nMinuros após horario núcleo: " + tempoMulta +
-                "\n\n------------------------ Descontos -----------------------\n" +
+                "\nTempo para desconto: " +tempoDesconto+
+                "\n\n---------------------- Descontos -----------------------\n" +
+                "   Caso o condutor já tenha horas para desconto\n" +
+                "            o mesmo é dado automaticamente"+
                 "\nHoras acumuladas: " + condutor.getTempoPagoHora() +
                 "\nValor do desconto:" +
-                "\n\n------------------------- Valores ------------------------\n" +
+                "\n\n----------------------- Valores ------------------------\n" +
                 "\nValor de tempo de permanência: " + valorHora +
                 "\nValor da multa: " + valorMulta +
                 "\nValor de desconto: " + valorDesconto +
