@@ -24,6 +24,7 @@ Pedro é sócio proprietário de um estacionamento localizado na cidade de Foz d
 - CRUD de condutor
 - CRUD de movimentação
 - CRUD de configurações
+- Finalização das movimentações
 
 <br>
 
@@ -73,6 +74,7 @@ As seguintes ferramentas foram usadas na construção do projeto:
 - Spring Boot
 - JPA / Hibernate
 - Maven
+- Lombok
 - Banco de dados PostgreSQL
 
 <br>
