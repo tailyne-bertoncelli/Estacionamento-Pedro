@@ -22,6 +22,7 @@ public class MarcaService {
         return marca.orElseThrow(() -> new RuntimeException("Marca não encontrada!"));
     }
 
+
     public List<Marca> findAll(){
         return this.marcaRepository.findAll();
     }
