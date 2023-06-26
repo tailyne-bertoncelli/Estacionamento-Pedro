@@ -13,14 +13,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/condutor")
 public class CondutorController {
     @Autowired
     private CondutorService condutorService;
 
-    @GetMapping
-    public ResponseEntity<?> findById(@RequestParam("id")final Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable("id")final Long id){
 
         try {
             this.condutorService.findById(id);
@@ -31,9 +32,9 @@ public class CondutorController {
     }
 
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(
-            @RequestParam("id") final Long id
+            @PathVariable("id") final Long id
     ){
         final Condutor condutorBanco = this.condutorService.findById(id);
 
@@ -74,8 +75,8 @@ public class CondutorController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar(@RequestParam("id") final Long id,
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar(@PathVariable("id") final Long id,
                                     @Validated @RequestBody final Condutor condutor){
 
         Condutor condutorBanco = condutorService.findById(id);

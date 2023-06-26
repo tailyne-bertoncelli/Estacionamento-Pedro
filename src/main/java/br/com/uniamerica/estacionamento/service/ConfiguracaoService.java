@@ -1,13 +1,10 @@
 package br.com.uniamerica.estacionamento.service;
 
-import br.com.uniamerica.estacionamento.entity.Condutor;
 import br.com.uniamerica.estacionamento.entity.Configuracao;
-import br.com.uniamerica.estacionamento.entity.Modelo;
 import br.com.uniamerica.estacionamento.repository.ConfiguracaoRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
 
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +18,10 @@ public class ConfiguracaoService {
     public Configuracao findById(Long id) {
         Optional<Configuracao> configuracao = this.configuracaoRepository.findById(id);
         return configuracao.orElseThrow(() -> new RuntimeException("Configuração não encontrada!"));
+    }
+
+    public List<Configuracao> findAll(){
+        return this.configuracaoRepository.findAll();
     }
 
     @Transactional

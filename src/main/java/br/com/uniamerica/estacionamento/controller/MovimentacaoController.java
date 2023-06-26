@@ -16,15 +16,15 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
-
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/movimentacao")
 public class MovimentacaoController {
     @Autowired
     private MovimentacaoService movimentacaoService;
 
-    @GetMapping
-    public ResponseEntity<?> findById(@RequestParam("id")final Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable("id")final Long id){
 
         try {
             this.movimentacaoService.findById(id);
@@ -50,6 +50,22 @@ public class MovimentacaoController {
         return ResponseEntity.ok(movimentacaoAberta);
     }
 
+    @GetMapping("/movimentacoes-finalizadas")
+    public ResponseEntity <?> finalizadas(){
+
+        List<Movimentacao> movimentacao = this.movimentacaoService.findAll();
+
+        List <Movimentacao> movimentacaoFinalizada = new ArrayList();
+
+        for (Movimentacao valor: movimentacao) {
+            if (valor.isAtivo() == false)
+            {
+                movimentacaoFinalizada.add(valor);
+            }
+        }
+        return ResponseEntity.ok(movimentacaoFinalizada);
+    }
+
     @GetMapping("/lista-movimentacao")
     public List<Movimentacao> findAll(){
         return movimentacaoService.findAll();
@@ -67,8 +83,8 @@ public class MovimentacaoController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar(@RequestParam("id") final Long id,
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar(@PathVariable("id") final Long id,
                                     @Validated @RequestBody final Movimentacao movimentacao){
 
         Movimentacao movimentacaoBanco = movimentacaoService.findById(id);
@@ -85,9 +101,9 @@ public class MovimentacaoController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(
-            @RequestParam("id") final Long id
+            @PathVariable("id") final Long id
     ){
         final Movimentacao movimentacaoBanco = this.movimentacaoService.findById(id);
 

@@ -1,9 +1,6 @@
 package br.com.uniamerica.estacionamento.controller;
 
-import br.com.uniamerica.estacionamento.entity.Condutor;
-import br.com.uniamerica.estacionamento.entity.Configuracao;
-import br.com.uniamerica.estacionamento.entity.Marca;
-import br.com.uniamerica.estacionamento.entity.Modelo;
+import br.com.uniamerica.estacionamento.entity.*;
 import br.com.uniamerica.estacionamento.repository.ConfiguracaoRepository;
 import br.com.uniamerica.estacionamento.service.CondutorService;
 import br.com.uniamerica.estacionamento.service.ConfiguracaoService;
@@ -17,14 +14,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/configuracao")
 public class ConfiguracaoController {
     @Autowired
     private ConfiguracaoService configuracaoService;
 
-    @GetMapping
-    public ResponseEntity<?> findById(@RequestParam("id")final Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable("id")final Long id){
 
         try {
             this.configuracaoService.findById(id);
@@ -32,6 +30,11 @@ public class ConfiguracaoController {
         }catch (RuntimeException e){
             return ResponseEntity.badRequest().body("Nenhuma configuração encontrado!");
         }
+    }
+
+    @GetMapping("/lista-configuracoes")
+    public List<Configuracao> findAll(){
+        return configuracaoService.findAll();
     }
 
     @PostMapping
@@ -46,8 +49,8 @@ public class ConfiguracaoController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar(@RequestParam("id") final Long id,
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar(@PathVariable("id") final Long id,
                                     @Validated @RequestBody final Configuracao configuracao){
 
 

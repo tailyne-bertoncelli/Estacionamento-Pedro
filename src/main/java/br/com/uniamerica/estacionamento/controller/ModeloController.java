@@ -12,14 +12,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/modelo")
 public class ModeloController {
     @Autowired
     private ModeloService modeloService;
 
-    @GetMapping
-    public ResponseEntity<?> findById(@RequestParam("id")final Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable("id")final Long id){
 
         try {
             this.modeloService.findById(id);
@@ -63,8 +64,8 @@ public class ModeloController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar(@RequestParam("id") final Long id,
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar(@PathVariable("id") final Long id,
                                     @Validated @RequestBody final Modelo modelo){
 
         Modelo modeloBanco = modeloService.findById(id);
@@ -101,9 +102,9 @@ public class ModeloController {
     }
     */
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(
-            @RequestParam("id") final Long id
+            @PathVariable("id") final Long id
     ){
         final Modelo modeloBanco = this.modeloService.findById(id);
 

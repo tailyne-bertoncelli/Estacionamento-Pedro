@@ -176,5 +176,7 @@ public class MovimentacaoService {
                 System.out.println("12 "+ descontaHorasCondutor);
             }
         }
+
+        movimentacao.setAtivo(false);
     }
 }

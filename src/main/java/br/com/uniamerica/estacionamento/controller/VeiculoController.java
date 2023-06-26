@@ -15,14 +15,15 @@ import org.springframework.web.bind.annotation.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/api/veiculo")
 public class VeiculoController {
     @Autowired
     private VeiculoService veiculoService;
 
-    @GetMapping
-    public ResponseEntity<?> findById(@RequestParam("id")final Long id){
+    @GetMapping("/{id}")
+    public ResponseEntity<?> findById(@PathVariable("id")final Long id){
 
         try {
             this.veiculoService.findById(id);
@@ -66,8 +67,8 @@ public class VeiculoController {
         }
     }
 
-    @PutMapping
-    public ResponseEntity<?> editar(@RequestParam("id") final Long id,
+    @PutMapping("/{id}")
+    public ResponseEntity<?> editar(@PathVariable("id") final Long id,
                                     @Validated @RequestBody final Veiculo veiculo){
 
         Veiculo veiculoBanco = veiculoService.findById(id);
@@ -85,9 +86,9 @@ public class VeiculoController {
         }
     }
 
-    @DeleteMapping
+    @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(
-            @RequestParam("id") final Long id
+            @PathVariable("id") final Long id
     ){
         final Veiculo veiculoBanco = this.veiculoService.findById(id);
 
@@ -95,7 +96,7 @@ public class VeiculoController {
         return ResponseEntity.ok("Veiculo excluido com Sucesso");
     }
 
-    @PutMapping("ativa/{id}")
+    @PutMapping("/ativa/{id}")
     public ResponseEntity<?> ativaVeiculo(@PathVariable Long id){
         try {
             this.veiculoService.ativar(id);
@@ -105,7 +106,7 @@ public class VeiculoController {
         }
     }
 
-    @PutMapping("desativa/{id}")
+    @PutMapping("/desativa/{id}")
     public ResponseEntity<?> desativaVeiculo(@PathVariable Long id){
         try {
             this.veiculoService.desativar(id);
