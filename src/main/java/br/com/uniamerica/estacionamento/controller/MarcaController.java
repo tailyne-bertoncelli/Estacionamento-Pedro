@@ -81,7 +81,7 @@ public class MarcaController {
     }
 
 
-/*
+
     @PutMapping("/desativar/{id}")
     public ResponseEntity<?> desativaMarca(@PathVariable Long id){
         try {
@@ -92,6 +92,7 @@ public class MarcaController {
         }
     }
 
+/*
     @PutMapping("/ativar/{id}")
     public ResponseEntity<?> ativaMarca(@PathVariable Long id){
         try {

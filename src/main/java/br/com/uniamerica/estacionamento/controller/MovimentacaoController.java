@@ -138,7 +138,7 @@ public class MovimentacaoController {
         //movimentacao1.setSaida(movimentacao.getSaida());
         try {
             this.movimentacaoService.finalizaMov(id, movimentacao1);
-            return ResponseEntity.ok(movimentacao1.toString());
+            return ResponseEntity.ok("Movimentação finalizada com sucesso! Obrigada!");
         } catch (RuntimeException e){
             return ResponseEntity.badRequest().body("Erro ao finalizar movimentação!");
         }

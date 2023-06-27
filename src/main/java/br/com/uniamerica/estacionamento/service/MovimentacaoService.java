@@ -112,6 +112,11 @@ public class MovimentacaoService {
         System.out.println("1 " + horas);
         System.out.println("2 " + minutos);
 
+        //CASO TENHA PERMANECIDO MENOS DE 1 HORA PARA 1 HORA IGUAL
+        if (horas == 0){
+            horas += 1;
+        }
+
         //CALCULANDO VALOR DAS HORAS
         BigDecimal vHora = configuracao.getValorHora();
         BigDecimal vTotalHora = BigDecimal.valueOf(horas).multiply(vHora);
@@ -178,6 +183,7 @@ public class MovimentacaoService {
             }
         }
 
+        movimentacao.getVeiculo().setAtivo(false);
         movimentacao.setAtivo(false);
     }
 }

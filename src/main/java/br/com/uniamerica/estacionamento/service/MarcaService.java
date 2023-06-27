@@ -44,7 +44,7 @@ public class MarcaService {
         this.marcaRepository.delete(marca);
     }
 
-/*
+
     @Transactional
     public void desativar(Long id){
         var marca = marcaRepository.findById(id);
@@ -55,7 +55,7 @@ public class MarcaService {
             throw new RuntimeException("A marca já esta desativada!");
         }
     }
-
+/*
     @Transactional
     public void ativar(Long id){
         var marca = marcaRepository.findById(id);

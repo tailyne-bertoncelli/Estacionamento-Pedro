@@ -7,11 +7,11 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ModeloRepository extends JpaRepository<Modelo, Long> {
-    /*
+
     @Modifying
     @Query("UPDATE Modelo modelo SET modelo.ativo=false WHERE modelo.id = :idModelo")
     public void desativaModelo (@Param("idModelo")Long id);
-
+    /*
     @Modifying
     @Query("UPDATE Modelo modelo SET modelo.ativo=true WHERE modelo.id = :idModelo")
     public void ativaModelo (@Param("idModelo")Long id);

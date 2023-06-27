@@ -80,7 +80,7 @@ public class ModeloController {
         }
     }
 
-/*
+
     @PutMapping("/desativar/{id}")
     public ResponseEntity<?> desativaModelo(@PathVariable Long id){
         try {
@@ -90,7 +90,7 @@ public class ModeloController {
             return ResponseEntity.badRequest().body("Modelo não encontrado!");
         }
     }
-
+/*
     @PutMapping("/ativar/{id}")
     public ResponseEntity<?> ativaMarca(@PathVariable Long id){
         try {

@@ -53,7 +53,7 @@ public class ModeloService {
         this.modeloRepository.save(modelo);
     }
 
-    /*
+
     @Transactional
     public void desativar(Long id){
         var marca = modeloRepository.findById(id);
@@ -64,7 +64,7 @@ public class ModeloService {
             throw new RuntimeException("A modelo não encontrado!");
         }
     }
-
+    /*
     @Transactional
     public void ativar(Long id){
         var marca = modeloRepository.findById(id);
