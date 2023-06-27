@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.Duration;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 import java.util.Optional;
@@ -95,7 +96,7 @@ public class MovimentacaoService {
 
     @Transactional
     public void finalizaMov(final Long id, final Movimentacao movimentacao){
-        //movimentacao.setSaida(LocalDateTime.now());
+        movimentacao.setSaida(LocalDateTime.now());
         this.movimentacaoRepository.save(movimentacao);
         Configuracao configuracao = movimentacaoRepository.buscaConfig();
 
